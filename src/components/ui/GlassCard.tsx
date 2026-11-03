@@ -1,0 +1,23 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+
+interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+  className?: string;
+  padded?: boolean;
+}
+
+export function GlassCard({ children, className, padded = true }: GlassCardProps) {
+  return (
+    <div
+      className={cn(
+        "glass-card relative overflow-hidden group rounded-xl",
+        padded && "p-6",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
