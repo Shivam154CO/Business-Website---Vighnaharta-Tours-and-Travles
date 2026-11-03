@@ -59,8 +59,8 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
       )}
       onClick={() => onSelect?.(vehicle.id)}
     >
-      {/* Decorative Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-brand-blue/5 blur-[80px] rounded-full pointer-events-none transition-transform duration-700 group-hover:scale-150" />
+      {/* Decorative Glow - Toned down */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-brand-blue/5 blur-[80px] rounded-full pointer-events-none group-hover:bg-brand-blue/10 transition-colors" />
 
       {/* Car Image Area */}
       <div 
@@ -85,10 +85,9 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
           />
         </motion.div>
 
-        {/* Badge */}
+        {/* Badge - Toned down */}
         <div 
-          className="absolute top-4 left-4 z-20 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-white shadow-sm"
-          style={{ backgroundColor: vehicle.badgeColor }}
+          className="absolute top-4 left-4 z-20 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-sm bg-brand-blue"
         >
           {vehicle.badge}
         </div>
@@ -133,7 +132,7 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
         </div>
 
         {/* Dynamic Feature - "The Delight" */}
-        <div className="relative mb-8 h-12 flex items-center justify-center overflow-hidden rounded-2xl bg-[#F8FAFC] border border-[#F1F5F9] px-4">
+        <div className="relative mb-8 h-12 flex items-center justify-center overflow-hidden rounded-xl bg-gray-50 border border-gray-100 px-4">
           <AnimatePresence mode="wait">
             <motion.div
               key={featureIndex}
@@ -142,8 +141,8 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
               exit={{ opacity: 0, x: -20 }}
               className="flex items-center gap-3"
             >
-              <Sparkles className="w-4 h-4 text-accent-gold shrink-0" />
-              <span className="text-xs font-body font-bold text-[#475569] uppercase tracking-widest text-center">
+              <Sparkles className="w-3.5 h-3.5 text-brand-blue shrink-0" />
+              <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-[0.2em] text-center">
                 {vehicle.extraFeatures[featureIndex]}
               </span>
             </motion.div>
@@ -153,10 +152,10 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
         {/* Action Row */}
         <div className="mt-auto flex items-center gap-3">
           <AnimatedButton
-            variant={selected ? "blue" : "gold"}
+            variant="blue"
             size="md"
             href="/book"
-            className="flex-1 shadow-lg hover:shadow-accent-gold/20 text-[11px] font-black uppercase tracking-[0.2em]"
+            className="flex-1 shadow-md hover:shadow-lg text-[10px] font-black uppercase tracking-[0.2em]"
             onClick={(e) => {
               e.stopPropagation();
               onSelect?.(vehicle.id);
@@ -166,7 +165,7 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
           </AnimatedButton>
           
           <button 
-            className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F1F5F9] text-[#475569] transition-colors hover:bg-brand-blue hover:text-white"
+            className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-50 text-[#64748B] border border-gray-100 transition-colors hover:bg-brand-blue hover:text-white"
             onClick={(e) => {
               e.stopPropagation();
               handleCarClick();

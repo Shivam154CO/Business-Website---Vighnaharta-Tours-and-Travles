@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Car, Users, Award, Star } from "lucide-react";
-import { GlassCard } from "@/components/ui/GlassCard";
+import { motion } from "framer-motion";
 
 interface StatItem {
   label: string;
@@ -36,13 +36,13 @@ function StatCard({ stat, start }: { stat: StatItem; start: boolean }) {
     const target = parseFloat(match[1]);
     const decimals = (match[1].split(".")[1] || "").length;
     const suffix = match[2] || "";
-    const duration = 1200;
+    const duration = 2000;
     const t0 = performance.now();
     let raf = 0;
 
     const tick = (now: number) => {
       const p = Math.min((now - t0) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
+      const eased = 1 - Math.pow(1 - p, 4);
       setDisplay((target * eased).toFixed(decimals) + suffix);
       if (p < 1) raf = requestAnimationFrame(tick);
     };
@@ -53,13 +53,22 @@ function StatCard({ stat, start }: { stat: StatItem; start: boolean }) {
 
   const Icon = stat.Icon;
   return (
-    <GlassCard className="rounded-xl border border-[#E2E8F0] p-6 text-center shadow-sm group md:p-8">
-      <div className="mb-4 flex items-center justify-center gap-2">
-        <Icon className="h-5 w-5 text-brand-blue" />
-        <span className="font-mono text-4xl font-bold text-[#0F172A] md:text-5xl">{display}</span>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="relative p-8 rounded-[2rem] bg-white border border-gray-100 shadow-sm group hover:shadow-md transition-shadow"
+    >
+      <div className="relative z-10 flex flex-col items-center">
+        <div className="mb-4 w-12 h-12 rounded-2xl bg-brand-blue/5 flex items-center justify-center text-brand-blue group-hover:scale-110 transition-transform">
+          <Icon className="h-6 w-6" />
+        </div>
+        <span className="font-display text-5xl font-black text-[#0F172A] mb-2">
+          {display}
+        </span>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[#94A3B8]">{stat.label}</p>
       </div>
-      <p className="text-sm text-[#64748B]">{stat.label}</p>
-    </GlassCard>
+    </motion.div>
   );
 }
 
@@ -84,9 +93,9 @@ export function StatsCounter() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden border-y border-[#E2E8F0] bg-[#F8FAFC] py-20 md:py-24">
+    <section className="relative bg-[#F8FAFC] py-32 overflow-hidden border-y border-gray-100">
       <div className="container-page relative z-10">
-        <div ref={ref} className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div ref={ref} className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 text-center">
           {STATS.map((stat) => (
             <StatCard key={stat.label} stat={stat} start={visible} />
           ))}

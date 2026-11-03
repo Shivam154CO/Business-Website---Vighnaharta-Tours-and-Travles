@@ -4,7 +4,7 @@ import "./globals.css";
 import { TopBar } from "@/components/layout/TopBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
+import { FloatingCTA } from "@/components/ui/FloatingCTA";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 const outfit = Outfit({
@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         {children}
         <Footer />
-        <WhatsAppFloat />
+        <FloatingCTA />
       </body>
     </html>
   );
