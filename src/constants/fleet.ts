@@ -1,6 +1,4 @@
 
-import { IMG } from "./routes";
-
 export interface Vehicle {
   id: string;
   name: string;
@@ -57,9 +55,8 @@ export const FLEET: Vehicle[] = [
     ],
     badge: "Economy",
     badgeColor: "#10B981",
-    image: IMG(
-      "silver sedan car on a clean city road in india, bright daylight, realistic car photography"
-    ),
+    image: "/Toyota_Etios.png",
+
   },
   {
     id: "suzuki-ertiga",
@@ -79,9 +76,8 @@ export const FLEET: Vehicle[] = [
     ],
     badge: "Popular",
     badgeColor: "#3B72FF",
-    image: IMG(
-      "white seven seater MPV car parked outside a hotel entrance, daylight, realistic car photography"
-    ),
+    image: "/Suzuki.png",
+
   },
   {
     id: "toyota-innova",
@@ -107,9 +103,8 @@ export const FLEET: Vehicle[] = [
     ],
     badge: "Best Seller",
     badgeColor: "#F59E0B",
-    image: IMG(
-      "white MPV people carrier car on an indian highway with mountains in the background, daylight, realistic car photography"
-    ),
+    image: "/Innova.png",
+
   },
   {
     id: "innova-crysta",
@@ -136,9 +131,8 @@ export const FLEET: Vehicle[] = [
     ],
     badge: "Premium",
     badgeColor: "#FF6B2B",
-    image: IMG(
-      "black premium MPV car parked in front of a modern building, daylight, realistic automobile photography"
-    ),
+    image: "/Crysta.png",
+
   },
   {
     id: "kia-carens",
@@ -164,7 +158,7 @@ export const FLEET: Vehicle[] = [
     ],
     badge: "New",
     badgeColor: "#818CF8",
-    image: "/Kia.png",
+    image: "/kia.png",
   },
   {
     id: "tempo-13",
@@ -185,9 +179,8 @@ export const FLEET: Vehicle[] = [
     ],
     badge: "Group",
     badgeColor: "#6366F1",
-    image: IMG(
-      "white tempo traveller 13 seater minibus parked on a roadside with trees, daylight, realistic photo"
-    ),
+    image: "/Traveller_13_Seater.png",
+
   },
   {
     id: "tempo-17",
@@ -214,9 +207,8 @@ export const FLEET: Vehicle[] = [
     ],
     badge: "Group",
     badgeColor: "#6366F1",
-    image: IMG(
-      "white tempo traveller 17 seater minibus on an open highway, bright daylight, realistic photo"
-    ),
+    image: "/Traveller_17-Seater.png",
+
   },
 ];
 

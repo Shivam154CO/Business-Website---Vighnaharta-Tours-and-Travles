@@ -1,202 +1,353 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { MapPin, Calendar, Users, Clock, ArrowRight } from "lucide-react";
-import { SITE } from "@/constants/site";
-import { HERO_BACKGROUND } from "@/constants/routes";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ArrowRight,
+  CalendarDays,
+  MapPin,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Users,
+} from "lucide-react";
 
-const DESTINATIONS = [
-  "Shirdi",
-  "Mahabaleshwar",
-  "Lonavala",
-  "Goa",
-  "Nashik",
-  "Pune Airport",
+const TRIP_TYPES = ["One way", "Round trip", "Airport transfer", "Corporate", "Pilgrimage"];
+
+type ShowcaseCar = {
+  name: string;
+  tag: string;
+  image: string;
+  accent: string;
+  rate: string;
+  seats: string;
+};
+
+const CARS: ShowcaseCar[] = [
+  {
+    name: "Innova Crysta",
+    tag: "Premium family",
+    image: "/Crysta.png",
+    accent: "#f5c76a",
+    rate: "₹22/km",
+    seats: "7 seats",
+  },
+  {
+    name: "Toyota Innova",
+    tag: "Best seller",
+    image: "/Innova.png",
+    accent: "#7ec8ff",
+    rate: "₹20/km",
+    seats: "7 seats",
+  },
+  {
+    name: "Kia Carens",
+    tag: "Modern comfort",
+    image: "/kia.png",
+    accent: "#c4b5fd",
+    rate: "₹20/km",
+    seats: "6 seats",
+  },
+  {
+    name: "Swift Dzire",
+    tag: "City smart",
+    image: "/Swift_Dzire.png",
+    accent: "#86efac",
+    rate: "₹12/km",
+    seats: "4 seats",
+  },
+  {
+    name: "Tempo Traveller",
+    tag: "Group travel",
+    image: "/Traveller_13_Seater.png",
+    accent: "#fdba74",
+    rate: "Package",
+    seats: "13-17 seats",
+  },
 ];
-
-const PASSENGER_OPTIONS = ["1-4", "5-6", "7-8", "9-13", "14-17"];
 
 export function HeroSection() {
   const router = useRouter();
+  const [active, setActive] = useState(0);
   const [form, setForm] = useState({
-    from: "Pune",
-    to: DESTINATIONS[0],
+    name: "",
+    phone: "",
+    pickup: "",
+    destination: "",
     date: "",
-    passengers: "1-4",
+    tripType: "One way",
+    details: "",
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const id = window.setInterval(() => setActive((i) => (i + 1) % CARS.length), 3600);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const car = CARS[active];
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const params = new URLSearchParams(form);
-    router.push(`/book?${params.toString()}`);
+
+    setSubmitting(true);
+    setSubmitStatus("idle");
+
+    try {
+      const res = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          pickup: form.pickup,
+          dropoff: form.destination,
+          date: form.date,
+          tripType: form.tripType,
+          passengers: form.details,
+          details: form.details,
+          source: "website",
+        }),
+      });
+
+      if (res.ok) {
+        setSubmitStatus("success");
+        setForm({
+          name: "",
+          phone: "",
+          pickup: "",
+          destination: "",
+          date: "",
+          tripType: "One way",
+          details: "",
+        });
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch {
+      setSubmitStatus("error");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#0F172A]">
-      {/* Background: image fallback + looping video */}
-      <div className="absolute inset-0 z-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${HERO_BACKGROUND})` }}
-          aria-hidden="true"
-        />
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          poster={HERO_BACKGROUND}
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/90 via-[#0F172A]/75 to-[#0F172A]/95" />
-      </div>
+    <section className="relative isolate min-h-[100svh] overflow-hidden bg-[#05080d] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(245,199,107,0.22),transparent_18%),radial-gradient(circle_at_80%_70%,rgba(71,110,255,0.2),transparent_28%),linear-gradient(90deg,rgba(4,8,13,0.88)_0%,rgba(4,8,13,0.72)_34%,rgba(4,8,13,0.8)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,8,13,0.05)_0%,rgba(4,8,13,0.40)_35%,rgba(4,8,13,0.82)_100%)]" />
 
-      <div className="relative z-10 container-page py-16 md:py-24 flex flex-col items-center text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur mb-6 text-sm font-body font-medium text-white"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#25D366]" />
-          </span>
-          24/7 Customer Support
-        </motion.div>
+      <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:68px_68px] [mask-image:linear-gradient(180deg,transparent_0%,black_18%,black_82%,transparent_100%)]" />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-5 text-4xl sm:text-5xl md:text-6xl font-display font-bold text-white leading-tight max-w-3xl"
-        >
-          Ride in Comfort,{" "}
-          <span className="text-[#7CA0FF]">Travel with Trust.</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-8 max-w-2xl text-base sm:text-lg text-white/80 leading-relaxed"
-        >
-          Clean cabs, professional drivers, and transparent pricing for outstation
-          tours, airport transfers, pilgrimage trips, and group travel across
-          Maharashtra.
-        </motion.p>
-
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 w-full">
-          <button
-            type="button"
-            onClick={() => router.push("/book")}
-            className="w-full sm:w-auto min-h-[52px] inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-accent-gold text-white text-base font-body font-semibold hover:bg-orange-500 transition-colors"
+      <div className="relative z-10 mx-auto max-w-[1360px] px-4 pb-14 pt-8 md:px-6 lg:px-8 lg:pb-20">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.04fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65 }}
+            className="pt-2"
           >
-            Book Your Ride <ArrowRight className="w-4 h-4" />
-          </button>
-          <a
-            href={SITE.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto min-h-[52px] inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-white/30 bg-white/5 backdrop-blur text-sm font-body font-semibold text-white hover:bg-white/15 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413" />
-            </svg>
-            WhatsApp Us
-          </a>
-        </div>
+            <h1 className="text-[clamp(3rem,6vw,6rem)] font-black leading-[0.9] tracking-[-0.065em] text-[#f9f7f3]">
+              Drive the
+              <span className="block bg-[linear-gradient(90deg,#f7d98c_0%,#fbf0d2_40%,#b7d5ff_100%)] bg-clip-text text-transparent">
+                premium way.
+              </span>
+            </h1>
 
-        {/* Booking Widget */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="w-full max-w-4xl rounded-2xl bg-white shadow-2xl border border-[#E2E8F0] p-5 sm:p-6 text-left"
-        >
-          <h3 className="mb-5 text-lg font-display font-bold text-[#0F172A]">Book Your Ride</h3>
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="flex flex-col gap-2 min-w-0">
-                <label htmlFor="hero-from" className="text-xs font-mono text-[#64748B] uppercase">From</label>
-                <div className="flex items-center gap-2 rounded-lg bg-white border border-[#E2E8F0] px-3 py-2.5 focus-within:border-brand-blue focus-within:ring-2 focus-within:ring-brand-blue/15 transition-colors">
-                  <MapPin className="w-4 h-4 shrink-0 text-[#64748B]" />
-                  <input
-                    id="hero-from"
-                    type="text"
-                    value={form.from}
-                    onChange={(e) => setForm({ ...form, from: e.target.value })}
-                    placeholder="Pune"
-                    className="w-full min-w-0 bg-transparent text-sm font-body text-[#0F172A] outline-none"
-                  />
-                </div>
-              </div>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-[#dfe9f6] md:text-lg">
+              Airport transfers, weekend escapes, pilgrimages, and family travel with safe drivers, premium cars, and a smooth booking experience from start to finish.
+            </p>
 
-              <div className="flex flex-col gap-2 min-w-0">
-                <label htmlFor="hero-to" className="text-xs font-mono text-[#64748B] uppercase">To</label>
-                <div className="flex items-center gap-2 rounded-lg bg-white border border-[#E2E8F0] px-3 py-2.5 focus-within:border-brand-blue focus-within:ring-2 focus-within:ring-brand-blue/15 transition-colors">
-                  <MapPin className="w-4 h-4 shrink-0 text-[#64748B]" />
-                  <select
-                    id="hero-to"
-                    value={form.to}
-                    onChange={(e) => setForm({ ...form, to: e.target.value })}
-                    className="w-full min-w-0 bg-transparent text-sm font-body text-[#0F172A] outline-none"
-                  >
-                    {DESTINATIONS.map((d) => (
-                      <option key={d} value={d}>{d}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2 min-w-0">
-                <label htmlFor="hero-date" className="text-xs font-mono text-[#64748B] uppercase">Date</label>
-                <div className="flex items-center gap-2 rounded-lg bg-white border border-[#E2E8F0] px-3 py-2.5 focus-within:border-brand-blue focus-within:ring-2 focus-within:ring-brand-blue/15 transition-colors">
-                  <Calendar className="w-4 h-4 shrink-0 text-[#64748B]" />
-                  <input
-                    id="hero-date"
-                    type="date"
-                    value={form.date}
-                    onChange={(e) => setForm({ ...form, date: e.target.value })}
-                    className="w-full min-w-0 bg-transparent text-sm font-body text-[#0F172A] outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2 min-w-0">
-                <label htmlFor="hero-passengers" className="text-xs font-mono text-[#64748B] uppercase">Passengers</label>
-                <div className="flex items-center gap-2 rounded-lg bg-white border border-[#E2E8F0] px-3 py-2.5 focus-within:border-brand-blue focus-within:ring-2 focus-within:ring-brand-blue/15 transition-colors">
-                  <Users className="w-4 h-4 shrink-0 text-[#64748B]" />
-                  <select
-                    id="hero-passengers"
-                    value={form.passengers}
-                    onChange={(e) => setForm({ ...form, passengers: e.target.value })}
-                    className="w-full min-w-0 bg-transparent text-sm font-body text-[#0F172A] outline-none"
-                  >
-                    {PASSENGER_OPTIONS.map((p) => (
-                      <option key={p} value={p}>{p}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => router.push("/book")}
+                className="group inline-flex items-center gap-2 rounded-full bg-[#f5c76a] px-6 py-3.5 text-sm font-bold text-[#17120b] shadow-[0_18px_45px_rgba(245,199,107,0.32)] transition hover:bg-[#ffe2a5]"
+              >
+                Book your ride
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push("/fleet")}
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 py-3.5 text-sm font-semibold text-[#f8f9fb] backdrop-blur-sm transition hover:border-[#f5c76a]/40 hover:text-[#f7d68d]"
+              >
+                View fleet
+              </button>
             </div>
 
-            <button
-              type="submit"
-              className="mt-5 w-full min-h-[52px] inline-flex items-center justify-center gap-2 rounded-full bg-accent-gold text-white text-base font-body font-semibold hover:bg-orange-500 transition-colors"
-            >
-              Get Fare Estimate <ArrowRight className="w-4 h-4" />
-            </button>
-          </form>
-        </motion.div>
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#dfe9f6]">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-[#f5c76a]" />
+                Verified drivers
+              </div>
+              <div className="flex items-center gap-2">
+                <Star className="h-4 w-4 fill-[#f5c76a] text-[#f5c76a]" />
+                4.9 rated service
+              </div>
+            </div>
+          </motion.div>
 
-        <div className="mt-8 flex items-center justify-center gap-2 text-white/70 text-xs font-mono">
-          <Clock className="w-4 h-4 text-[#7CA0FF]" />
-          <span>24/7 Service &nbsp;•&nbsp; Instant Confirmation</span>
+          <div className="relative flex justify-center lg:justify-end">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, x: 120 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -80 }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                className="relative w-full max-w-[720px] flex justify-center items-center mt-4"
+              >
+                <div className="relative w-full h-[340px] md:h-[420px] w-full max-w-full">
+                  <Image
+                    src={car.image}
+                    alt={car.name}
+                    fill
+                    priority
+                    className="object-contain scale-[1.05]"
+                    sizes="(max-width: 768px) 560px, 760px"
+                  />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="lg:col-span-2 w-full mt-4">
+            <motion.form
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              onSubmit={handleSubmit}
+              className="rounded-[28px] border border-white/10 bg-[#0b1119]/70 p-4 shadow-[0_30px_80px_rgba(0,0,0,0.42)] backdrop-blur-xl w-full"
+            >
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                <label className="space-y-1.5">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccd7ea]">Full Name</span>
+                  <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 focus-within:border-[#f5c76a]/35">
+                    <Users className="h-4 w-4 text-[#f5c76a]" />
+                    <input
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      placeholder="Your full name"
+                      className="w-full bg-transparent text-sm text-white placeholder:text-[#8f9db1] outline-none"
+                    />
+                  </div>
+                </label>
+
+                <label className="space-y-1.5">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccd7ea]">Mobile Number</span>
+                  <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 focus-within:border-[#f5c76a]/35">
+                    <span className="text-sm font-semibold text-[#f5c76a]">+91</span>
+                    <input
+                      type="tel"
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      placeholder="Mobile number"
+                      className="w-full bg-transparent text-sm text-white placeholder:text-[#8f9db1] outline-none"
+                    />
+                  </div>
+                </label>
+
+                <label className="space-y-1.5">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccd7ea]">Pickup Point</span>
+                  <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 focus-within:border-[#f5c76a]/35">
+                    <MapPin className="h-4 w-4 text-[#f5c76a]" />
+                    <input
+                      value={form.pickup}
+                      onChange={(e) => setForm({ ...form, pickup: e.target.value })}
+                      placeholder="Pickup location"
+                      className="w-full bg-transparent text-sm text-white placeholder:text-[#8f9db1] outline-none"
+                    />
+                  </div>
+                </label>
+
+                <label className="space-y-1.5">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccd7ea]">Destination</span>
+                  <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 focus-within:border-[#f5c76a]/35">
+                    <MapPin className="h-4 w-4 text-[#f5c76a]" />
+                    <input
+                      value={form.destination}
+                      onChange={(e) => setForm({ ...form, destination: e.target.value })}
+                      placeholder="Drop location"
+                      className="w-full bg-transparent text-sm text-white placeholder:text-[#8f9db1] outline-none"
+                    />
+                  </div>
+                </label>
+
+                <label className="space-y-1.5">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccd7ea]">Travel Date</span>
+                  <div className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 focus-within:border-[#f5c76a]/35">
+                    <CalendarDays className="h-4 w-4 text-[#f5c76a]" />
+                    <input
+                      type="date"
+                      value={form.date}
+                      onChange={(e) => setForm({ ...form, date: e.target.value })}
+                      className="w-full bg-transparent text-sm text-white outline-none [color-scheme:dark]"
+                    />
+                  </div>
+                </label>
+
+                <label className="space-y-1.5">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccd7ea]">Trip Type</span>
+                  <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 focus-within:border-[#f5c76a]/35">
+                    <select
+                      value={form.tripType}
+                      onChange={(e) => setForm({ ...form, tripType: e.target.value })}
+                      className="w-full bg-transparent text-sm text-white outline-none"
+                    >
+                      {TRIP_TYPES.map((t) => (
+                        <option key={t} value={t} className="bg-[#0f151e]">
+                          {t}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </label>
+              </div>
+
+              {submitStatus === "success" ? (
+                <div className="mt-4 flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border border-[#f5c76a]/30 bg-[#f5c76a]/10 text-center">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#f5c76a]/20 text-[#f5c76a]">
+                    <ArrowRight className="h-6 w-6" />
+                  </div>
+                  <h3 className="font-bold text-white">Enquiry sent successfully</h3>
+                  <p className="text-sm text-[#dfe9f6]">We&rsquo;ve received your booking request. Our team will contact you shortly on {form.phone}.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="mt-4 flex flex-wrap gap-4">
+                    <label className="flex-1 space-y-1.5">
+                      <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccd7ea]">Message / Details</span>
+                      <textarea
+                        value={form.details}
+                        onChange={(e) => setForm({ ...form, details: e.target.value })}
+                        rows={2}
+                        placeholder="Passengers, preferred car, pickup time..."
+                        className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white placeholder:text-[#8f9db1] outline-none focus:border-[#f5c76a]/35"
+                      />
+                    </label>
+
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-[#f5c76a] px-6 py-3 text-sm font-bold text-[#17120b] transition hover:bg-[#ffe0a3] shadow-[0_18px_45px_rgba(245,199,107,0.32)] disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {submitting ? "Sending..." : "Send Enquiry"}
+                      <ArrowRight className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  {submitStatus === "error" && (
+                    <div className="mt-3 p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
+                      Failed to send enquiry. Please try again.
+                    </div>
+                  )}
+                </>
+              )}
+            </motion.form>
+          </div>
         </div>
       </div>
     </section>

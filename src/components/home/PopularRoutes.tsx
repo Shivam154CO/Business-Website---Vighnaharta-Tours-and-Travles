@@ -1,12 +1,24 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { POPULAR_ROUTES } from "@/constants/routes";
 import { RouteCard } from "@/components/ui/RouteCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 
-export function PopularRoutes() {
+type RouteItem = {
+  id: string;
+  name: string;
+  distance: string;
+  duration: string;
+  startingFrom: string;
+  image: string;
+};
+
+type PopularRoutesProps = {
+  routes: RouteItem[];
+};
+
+export function PopularRoutes({ routes }: PopularRoutesProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -80,7 +92,7 @@ export function PopularRoutes() {
           ref={ref}
           className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-8 -mx-4 px-4 sm:mx-0 sm:px-0"
         >
-          {POPULAR_ROUTES.map((route) => (
+          {routes.map((route) => (
             <div key={route.id} className="snap-start">
               <RouteCard route={route} />
             </div>
@@ -88,7 +100,7 @@ export function PopularRoutes() {
         </div>
 
         <div className="mt-2 flex justify-center gap-2">
-          {POPULAR_ROUTES.map((route, i) => (
+          {routes.map((route, i) => (
             <button
               type="button"
               key={route.id}

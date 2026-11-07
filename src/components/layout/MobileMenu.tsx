@@ -44,7 +44,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                   className="h-9 w-9 shrink-0 rounded-lg object-contain"
                 />
                 <span className="truncate text-base font-display font-bold tracking-tight text-[#0F172A]">
-                  Shree Vighnaharta Travels
+                  Morya Travels
                 </span>
               </div>
               <button

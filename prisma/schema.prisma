@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Admin {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  role         String        @default("admin")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  notifications Notification[]
+}
+
+model Vehicle {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  type          String
+  seats         Int
+  luggage       Int
+  ac            Boolean
+  ratePerKm     Int
+  minKm         Int
+  badge         String?
+  badgeColor    String?
+  image         String
+  features      String
+  extraFeatures String
+  packageRate   Int?
+  available     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  bookings      Booking[]
+}
+
+model Route {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  distance     String
+  duration     String
+  startingFrom String
+  image        String
+  description  String?
+  popular      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Package {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  columns     String
+  rows        String
+  note        String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Booking {
+  id            String        @id @default(cuid())
+  bookingNumber String        @unique
+  name          String
+  phone         String
+  email         String?
+  pickup        String
+  dropoff       String
+  travelDate    DateTime
+  tripType      String
+  passengers    String
+  vehicleId     String?
+  vehicleName   String?
+  status        String        @default("pending")
+  notes         String?
+  source        String?       @default("website")
+  amount        Int?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  vehicle       Vehicle?      @relation(fields: [vehicleId], references: [id])
+  notifications Notification[]
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  message   String
+  source    String   @default("website")
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String
+  title     String
+  message   String
+  unread    Boolean  @default(true)
+  bookingId String?
+  adminId   String?
+  createdAt DateTime @default(now())
+  booking   Booking? @relation(fields: [bookingId], references: [id])
+  admin     Admin?   @relation(fields: [adminId], references: [id])
+}

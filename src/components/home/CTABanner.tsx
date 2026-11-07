@@ -18,7 +18,6 @@ export function CTABanner() {
       <div className="absolute inset-0 pointer-events-none">
         <SafeImage src={CTA_BACKGROUND} alt="" sizes="100vw" className="opacity-[0.12]" />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/10 to-transparent pointer-events-none" />
       <div className="container-page relative z-10">
         <div className="max-w-4xl mx-auto">
         <GlassCard className="p-8 md:p-12 rounded-2xl text-center border border-[#E2E8F0] shadow-lg">

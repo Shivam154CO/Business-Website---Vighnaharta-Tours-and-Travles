@@ -4,6 +4,14 @@ import { ZoomableImage } from "@/components/ui/ZoomableImage";
 import { SERVICES } from "@/constants/routes";
 import { Car, Plane, Landmark, Briefcase, MapPin, Users } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Services",
+  description:
+    "Outstation tours, airport transfers, pilgrimage cabs, corporate travel, local rides and group travel across Pune and Maharashtra.",
+  alternates: { canonical: "/services" },
+};
 
 const ICONS: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   outstation: Car,

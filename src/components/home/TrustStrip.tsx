@@ -26,7 +26,7 @@ export function TrustStrip() {
         className="border border-gray-100 bg-white rounded-[2rem] p-6 md:p-8 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)]"
       >
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-x divide-gray-100">
-          {TRUST.map((item, i) => {
+          {TRUST.map((item) => {
             const Icon = item.icon;
             return (
               <div 

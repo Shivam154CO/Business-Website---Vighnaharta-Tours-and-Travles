@@ -8,6 +8,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { Users, Briefcase, Snowflake, CheckCircle2, Sparkles } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -59,9 +60,6 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
       )}
       onClick={() => onSelect?.(vehicle.id)}
     >
-      {/* Decorative Glow - Toned down */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-brand-blue/5 blur-[80px] rounded-full pointer-events-none group-hover:bg-brand-blue/10 transition-colors" />
-
       {/* Car Image Area */}
       <div 
         className="relative h-56 w-full flex items-center justify-center p-6 cursor-pointer"
@@ -98,9 +96,12 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
         {/* Header: Name & Price */}
         <div className="flex items-start justify-between mb-6">
           <div className="text-left">
-            <h3 className="text-2xl font-display font-bold text-[#0F172A] mb-1 group-hover:text-brand-blue transition-colors">
+            <Link
+              href={`/fleet/${vehicle.id}`}
+              className="text-2xl font-display font-bold text-[#0F172A] mb-1 block transition-colors hover:text-brand-blue"
+            >
               {vehicle.name}
-            </h3>
+            </Link>
             <span className="text-xs font-mono text-[#64748B] uppercase tracking-wider">
               {vehicle.type} Class
             </span>

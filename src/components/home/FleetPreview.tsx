@@ -1,21 +1,45 @@
 "use client";
 
 import { useState } from "react";
-import { FLEET, FLEET_TYPES } from "@/constants/fleet";
 import { VehicleCard } from "@/components/ui/VehicleCard";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 
+const FLEET_TYPES = [
+  { key: "all", label: "All Vehicles" },
+  { key: "sedan", label: "Sedan" },
+  { key: "suv", label: "SUV" },
+  { key: "luxury", label: "Luxury" },
+  { key: "tempo", label: "Tempo" },
+] as const;
+
 type FleetTabKey = (typeof FLEET_TYPES)[number]["key"];
 
-export function FleetPreview() {
+type FleetPreviewProps = {
+  vehicles: Array<{
+    id: string;
+    name: string;
+    type: "sedan" | "suv" | "luxury" | "tempo";
+    seats: number;
+    luggage: number;
+    ac: boolean;
+    ratePerKm: number;
+    minKm: number;
+    features: string[];
+    extraFeatures: string[];
+    badge: string;
+    badgeColor: string;
+    image: string;
+    packageRate?: number;
+  }>;
+};
+
+export function FleetPreview({ vehicles }: FleetPreviewProps) {
   const [tab, setTab] = useState<FleetTabKey>("all");
 
-  const filtered =
-    tab === "all" ? FLEET : FLEET.filter((v) => v.type === tab);
+  const filtered = tab === "all" ? vehicles : vehicles.filter((v) => v.type === tab);
 
   return (
     <section className="py-20 md:py-24 bg-[#F8FAFC] border-t border-[#E2E8F0] relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-brand-blue/10 blur-[100px] pointer-events-none" />
       <div className="container-page relative z-10">
         <SectionTitle
           title="Our Fleet"

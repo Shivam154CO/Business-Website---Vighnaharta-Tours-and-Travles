@@ -49,7 +49,7 @@ export function WhyChooseUs() {
     <section className="py-24 relative overflow-hidden bg-white">
       <div className="container-page relative z-10">
         <SectionTitle
-          title="The Vighnaharta Advantage"
+          title="The Morya Advantage"
           subtitle="Setting the gold standard in premium travel services across Maharashtra."
         />
 

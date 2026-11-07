@@ -18,7 +18,7 @@ export function Footer() {
                 className="h-11 w-11 shrink-0 rounded-xl object-contain"
               />
               <span className="text-lg font-display font-bold tracking-tight text-[#0F172A]">
-                Shree Vighnaharta Travels
+                Morya Travels
               </span>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-[#64748B]">
@@ -53,6 +53,7 @@ export function Footer() {
               <li><Link href="/about" className="transition-colors hover:text-brand-blue">About Us</Link></li>
               <li><Link href="/packages" className="transition-colors hover:text-brand-blue">Packages</Link></li>
               <li><Link href="/corporate" className="transition-colors hover:text-brand-blue">Corporate</Link></li>
+              <li><Link href="/faqs" className="transition-colors hover:text-brand-blue">FAQs</Link></li>
               <li><Link href="/contact" className="transition-colors hover:text-brand-blue">Contact</Link></li>
             </ul>
           </div>
@@ -83,7 +84,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#E2E8F0] pt-8 md:flex-row">
           <p className="text-xs text-[#64748B]">
-            © 2026 Shree Vighnaharta Travels. All rights reserved.
+            © 2026 Morya Travels. All rights reserved.
           </p>
           <div className="flex items-center gap-2 text-xs text-[#64748B]">
             <p>Est. 2011</p>

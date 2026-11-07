@@ -12,7 +12,8 @@ export function GlassCard({ children, className, padded = true }: GlassCardProps
   return (
     <div
       className={cn(
-        "glass-card relative overflow-hidden group rounded-xl",
+        "glass relative overflow-hidden group rounded-xl",
+
         padded && "p-6",
         className,
       )}

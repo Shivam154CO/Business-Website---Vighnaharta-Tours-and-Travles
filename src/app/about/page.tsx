@@ -4,6 +4,14 @@ import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { IMG } from "@/constants/routes";
 import { Star, Clock, Car, Phone, Mail } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "Morya Travels is a Pune-based travel partner offering outstation cabs, airport transfers, pilgrimage trips and group travel since 2011.",
+  alternates: { canonical: "/about" },
+};
 
 const ABOUT_HERO = IMG(
   "clean white SUV taxi driving on a scenic green highway in maharashtra india, bright daylight, travel photography",
@@ -21,7 +29,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] to-white pointer-events-none" />
         <div className="container-page relative z-10 text-center">
           <h1 className="text-5xl md:text-7xl font-display font-bold text-[#0F172A] mb-6">
-            About Shree Vighnaharta Travels
+            About Morya Travels
           </h1>
           <p className="text-lg text-[#64748B] max-w-2xl mx-auto">
             Your trusted travel partner in Pune and across Maharashtra — offering
@@ -30,7 +38,7 @@ export default function AboutPage() {
           <div className="relative mt-12 h-56 md:h-80 lg:h-96 rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-sm bg-[#F1F5F9]">
             <SafeImage
               src={ABOUT_HERO}
-              alt="Shree Vighnaharta Travels cab on a scenic Maharashtra highway"
+              alt="Morya Travels cab on a scenic Maharashtra highway"
               priority
               sizes="(max-width: 1024px) 100vw, 80rem"
             />
@@ -47,7 +55,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <GlassCard className="p-12">
               <p className="text-[#64748B] leading-relaxed mb-6">
-                Shree Vighnaharta Travels was founded with a simple mission: to make
+                Morya Travels was founded with a simple mission: to make
                 intercity travel safe, comfortable, and affordable for everyone.
                 Whether it&rsquo;s a spiritual trip to Shirdi, a weekend getaway to
                 Lonavala, or a corporate transfer to Pune Airport — we&rsquo;ve got you
@@ -63,7 +71,7 @@ export default function AboutPage() {
             <div className="relative h-72 lg:h-[420px] rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-sm bg-[#F1F5F9]">
               <SafeImage
                 src={STORY_IMAGE}
-                alt="Passengers travelling with Shree Vighnaharta Travels"
+                alt="Passengers travelling with Morya Travels"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
@@ -105,11 +113,11 @@ export default function AboutPage() {
             <h3 className="font-display font-bold text-[#0F172A]">Jay Sevalal</h3>
             <p className="text-[#64748B] text-sm">Founder & Owner</p>
             <div className="flex gap-3 mt-4">
-              <a href="tel:9049710195" className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-[#0F172A] border border-[#E2E8F0] hover:bg-[#F1F5F9] transition-colors">
+              <a href="tel:8999514635" className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-[#0F172A] border border-[#E2E8F0] hover:bg-[#F1F5F9] transition-colors">
                 <Phone className="w-4 h-4 text-brand-blue" />
-                9049710195
+                8999514635
               </a>
-              <a href="mailto:shivampawar44330j@gmail.com" className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-[#0F172A] border border-[#E2E8F0] hover:bg-[#F1F5F9] transition-colors">
+              <a href="mailto:info@moryatravel.in" className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-[#0F172A] border border-[#E2E8F0] hover:bg-[#F1F5F9] transition-colors">
                 <Mail className="w-4 h-4 text-brand-blue" />
                 Email
               </a>

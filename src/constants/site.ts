@@ -1,17 +1,18 @@
 // Site-wide constants & contact info
 export const SITE = {
-  name: 'Shree Vighnaharta Travels',
+  name: 'Morya Travels',
   tagline: 'Your Journey, Our Responsibility',
+  url: 'https://www.moryatravels.in',
   logo: '/logo.jpeg',
-  phone: '9049710195',
-  phoneDisplay: '+91 90497 10195',
-  phone2: '9881360719',
-  phone2Display: '+91 98813 60719',
-  email: 'shivampawar44330j@gmail.com',
-  address: 'S.No 34, Kanifnath Housing Society, 2, Kharadi Rd, Borate Vasti, Chandan Nagar, Kharadi, Pune — 411014',
-  whatsapp: 'https://wa.me/919049710195',
+  phone: '8999514635',
+  phoneDisplay: '+91 89995 14635',
+  phone2: '8999514635',
+  phone2Display: '+91 89995 14635',
+  email: 'info@moryatravel.in',
+  whatsapp: 'https://wa.me/918999514635',
   established: '2011',
   owner: 'Jay Sevalal',
+  address: 'S.No 34, Kanifnath Housing Society, 2, Kharadi Rd, Borate Vasti, Chandan Nagar, Kharadi, Pune, Maharashtra 411014',
 };
 
 export const NAV_LINKS = [
