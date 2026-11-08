@@ -1,44 +1,55 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getCurrentAdmin } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { requireAdminMutation } from "@/lib/auth";
+import { supabaseAdmin } from "@/lib/supabase";
 
 const routeSchema = z.object({
-  slug: z.string().min(2),
-  name: z.string().min(2),
-  distance: z.string().min(1),
-  duration: z.string().min(1),
-  startingFrom: z.string().min(1),
-  image: z.string().min(1),
-  description: z.string().optional().nullable(),
-  popular: z.boolean().default(false),
+  name: z.string().trim().min(2).max(160),
+  distance: z.string().trim().max(60).optional().default(""),
+  duration: z.string().trim().max(60).optional().default(""),
+  startingFrom: z.string().trim().max(60).optional().default(""),
+  image: z.string().trim().max(500).default("/images/services/outstation.jpeg"),
+  description: z.string().trim().max(2000).optional().default(""),
+  popular: z.boolean().optional().default(false),
 });
 
-export async function GET() {
-  const admin = await getCurrentAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+function slugify(value: string) {
+  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
 
-  const routes = await prisma.route.findMany({ orderBy: { createdAt: "asc" } });
-  return NextResponse.json({ routes });
+export async function GET(request: Request) {
+  const guard = await requireAdminMutation(request);
+  if (!guard.ok) return guard.response;
+  const { data, error } = await supabaseAdmin.from("routes").select("*").order("created_at", { ascending: true });
+  if (error) return NextResponse.json({ error: "Failed to load routes: "+error.message }, { status: 500 });
+  return NextResponse.json({ ok: true, routes: data ?? [] });
 }
 
 export async function POST(request: Request) {
-  const admin = await getCurrentAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+  const guard = await requireAdminMutation(request);
+  if (!guard.ok) return guard.response;
   try {
-    const payload = await request.json();
+    const payload = await request.json().catch(() => null);
     const parsed = routeSchema.safeParse(payload);
-
-    if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid route payload" }, { status: 400 });
-    }
-
-    const route = await prisma.route.create({ data: parsed.data });
-    return NextResponse.json({ ok: true, route });
-  } catch (error) {
-    console.error("Route create error:", error);
-    return NextResponse.json({ error: "Failed to create route" }, { status: 500 });
+    if (!parsed.success) return NextResponse.json({ error: "Invalid route payload", issues: parsed.error.flatten().fieldErrors }, { status: 400 });
+    const p = parsed.data;
+    const row = {
+      slug: slugify(p.name),
+      name: p.name,
+      distance: p.distance || "",
+      duration: p.duration || "",
+      starting_from: p.startingFrom || "",
+      image: p.image,
+      description: p.description || "",
+      popular: p.popular ?? false,
+      updated_at: new Date().toISOString(),
+    };
+    const { data, error } = await supabaseAdmin.from("routes").insert(row).select("*").single();
+    if (error) return NextResponse.json({ error: "Failed to create route: "+error.message }, { status: 500 });
+    return NextResponse.json({ ok: true, route: data });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Failed to create route";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

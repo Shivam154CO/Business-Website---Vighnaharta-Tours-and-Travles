@@ -1,43 +1,63 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { prisma } from "@/lib/db";
-import { createNotification } from "@/lib/notifications";
+import { sendExternalNotification } from "@/lib/notify";
+import { supabaseAdmin } from "@/lib/supabase";
 
 const contactSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email().optional().or(z.literal("")),
-  phone: z.string().min(10),
-  message: z.string().min(10),
-  source: z.string().optional().default("website"),
+  name: z.string().trim().min(2).max(120),
+  email: z.string().trim().email().optional().or(z.literal("")),
+  phone: z.string().trim().min(10).max(20).regex(/^[+\d\s()-]{10,20}$/, "Invalid phone number"),
+  message: z.string().trim().min(10).max(4000),
+  source: z.string().trim().max(80).optional().default("website"),
 });
 
 export async function POST(request: Request) {
   try {
-    const payload = await request.json();
+    const payload = await request.json().catch(() => null);
     const parsed = contactSchema.safeParse(payload);
-
     if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid contact payload" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid contact payload", issues: parsed.error.flatten().fieldErrors }, { status: 400 });
     }
 
-    const lead = await prisma.lead.create({
-      data: {
-        name: parsed.data.name,
-        email: parsed.data.email || null,
-        phone: parsed.data.phone,
-        message: parsed.data.message,
-        source: parsed.data.source,
-      },
-    });
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+      return NextResponse.json({ error: "Contact service is not configured." }, { status: 503 });
+    }
 
-    await createNotification({
+    const row = {
+      name: parsed.data.name,
+      email: parsed.data.email || null,
+      phone: parsed.data.phone,
+      message: parsed.data.message,
+      source: parsed.data.source || "website",
+      status: "new",
+    };
+
+    const { data, error } = await supabaseAdmin.from("leads").insert(row).select("*").single();
+    if (error) {
+      console.error("Contact insert error:", error);
+      return NextResponse.json({ error: `Failed to submit message: ${error.message}` }, { status: 500 });
+    }
+
+    await supabaseAdmin.from("notifications").insert({
       type: "lead",
       title: "New enquiry received",
-      message: `${lead.name} sent a new enquiry from ${lead.phone}.`,
+      message: `${data.name} sent an enquiry from ${data.phone}.`,
+      unread: true,
     });
 
-    return NextResponse.json({ ok: true, lead });
+    try {
+      await sendExternalNotification({
+        type: "lead",
+        title: "New enquiry",
+        message: `${data.name} (${data.phone})${data.email ? `\n${data.email}` : ""}\n${(data.message || "").slice(0, 500)}`,
+        details: { leadId: data.id },
+      });
+    } catch (e) {
+      console.error("Lead external notification failed:", e);
+    }
+
+    return NextResponse.json({ ok: true, lead: { id: data.id } });
   } catch (error) {
     console.error("Contact route error:", error);
     return NextResponse.json({ error: "Failed to submit message" }, { status: 500 });

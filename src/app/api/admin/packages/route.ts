@@ -1,65 +1,54 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-import { getCurrentAdmin } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { requireAdminMutation } from "@/lib/auth";
+import { supabaseAdmin } from "@/lib/supabase";
 
 const packageSchema = z.object({
-  slug: z.string().min(2),
-  title: z.string().min(2),
-  description: z.string().optional().nullable(),
-  columns: z.array(z.string()).default([]),
-  rows: z.array(z.array(z.string())).default([]),
-  note: z.string().optional().nullable(),
-  active: z.boolean().default(true),
+  title: z.string().trim().min(2).max(160),
+  description: z.string().trim().max(2000).optional().default(""),
+  columns: z.string().trim().min(2).max(4000),
+  rows: z.string().trim().min(2).max(20000),
+  note: z.string().trim().max(1000).optional().default(""),
+  active: z.boolean().optional().default(true),
 });
 
-export async function GET() {
-  const admin = await getCurrentAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+function slugify(value: string) {
+  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
 
-  const packages = await prisma.package.findMany({ orderBy: { createdAt: "asc" } });
-  return NextResponse.json({ packages });
+export async function GET(request: Request) {
+  const guard = await requireAdminMutation(request);
+  if (!guard.ok) return guard.response;
+  const { data, error } = await supabaseAdmin.from("packages").select("*").order("created_at", { ascending: true });
+  if (error) return NextResponse.json({ error: "Failed to load packages: "+error.message }, { status: 500 });
+  return NextResponse.json({ ok: true, packages: data ?? [] });
 }
 
 export async function POST(request: Request) {
-  const admin = await getCurrentAdmin();
-  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+  const guard = await requireAdminMutation(request);
+  if (!guard.ok) return guard.response;
   try {
-    const raw = await request.json();
-    const columns = Array.isArray(raw.columns)
-      ? raw.columns
-      : typeof raw.columns === "string"
-        ? JSON.parse(raw.columns)
-        : [];
-    const rows = Array.isArray(raw.rows)
-      ? raw.rows
-      : typeof raw.rows === "string"
-        ? JSON.parse(raw.rows)
-        : [];
-
-    const parsed = packageSchema.safeParse({
-      ...raw,
-      columns,
-      rows,
-    });
-
-    if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid package payload" }, { status: 400 });
-    }
-
-    const pkg = await prisma.package.create({
-      data: {
-        ...parsed.data,
-        columns: JSON.stringify(parsed.data.columns),
-        rows: JSON.stringify(parsed.data.rows),
-      },
-    });
-
-    return NextResponse.json({ ok: true, package: pkg });
-  } catch (error) {
-    console.error("Package create error:", error);
-    return NextResponse.json({ error: "Failed to create package" }, { status: 500 });
+    const payload = await request.json().catch(() => null);
+    const parsed = packageSchema.safeParse(payload);
+    if (!parsed.success) return NextResponse.json({ error: "Invalid package payload", issues: parsed.error.flatten().fieldErrors }, { status: 400 });
+    JSON.parse(parsed.data.columns);
+    JSON.parse(parsed.data.rows);
+    const row = {
+      slug: slugify(parsed.data.title),
+      title: parsed.data.title,
+      description: parsed.data.description || "",
+      columns: JSON.parse(parsed.data.columns),
+      rows: JSON.parse(parsed.data.rows),
+      note: parsed.data.note || "",
+      active: parsed.data.active ?? true,
+      updated_at: new Date().toISOString(),
+    };
+    const { data, error } = await supabaseAdmin.from("packages").insert(row).select("*").single();
+    if (error) return NextResponse.json({ error: "Failed to create package: "+error.message }, { status: 500 });
+    return NextResponse.json({ ok: true, package: data });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : "Failed to create package. Ensure columns/rows are valid JSON.";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 }

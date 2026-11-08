@@ -1,7 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, Phone, MessageCircle } from "lucide-react";
-import { SITE } from "@/constants/site";
+import { SITE, whatsappUrl } from "@/constants/site";
+
+function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
 
 export function Footer() {
   return (
@@ -13,13 +23,10 @@ export function Footer() {
               <Image
                 src={SITE.logo}
                 alt={`${SITE.name} logo`}
-                width={80}
-                height={80}
-                className="h-11 w-11 shrink-0 rounded-xl object-contain"
+                width={352}
+                height={352}
+                className="h-32 w-32 shrink-0 rounded-xl object-contain sm:h-36 sm:w-36"
               />
-              <span className="text-lg font-display font-bold tracking-tight text-[#0F172A]">
-                Morya Travels
-              </span>
             </div>
             <p className="max-w-xs text-sm leading-relaxed text-[#64748B]">
               Your trusted travel partner for outstation tours, airport transfers,
@@ -60,26 +67,44 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-6 border-t border-[#E2E8F0] pt-8 md:flex-row">
-          <div className="flex flex-col items-center gap-4 text-sm text-[#64748B] md:flex-row">
-            <div className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-brand-blue" />
-              <span className="text-[#0F172A]">{SITE.phoneDisplay}</span>
+          <div className="flex flex-col items-center gap-3 text-sm text-[#64748B] md:items-start">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:justify-start">
+              <a href={`tel:${SITE.phone}`} className="flex items-center gap-2 text-[#0F172A] hover:text-brand-blue">
+                <Phone className="h-4 w-4 text-brand-blue" />
+                <span>{SITE.phoneDisplay}</span>
+              </a>
+              <a href={`tel:${SITE.phone2}`} className="flex items-center gap-2 text-[#0F172A] hover:text-brand-blue">
+                <Phone className="h-4 w-4 text-brand-blue" />
+                <span>{SITE.phone2Display}</span>
+              </a>
             </div>
-            <div className="flex items-center gap-2">
+            <a href={`mailto:${SITE.email}`} className="flex items-center gap-2 text-[#0F172A] hover:text-brand-blue">
               <Mail className="h-4 w-4 text-brand-blue" />
-              <span className="text-[#0F172A]">{SITE.email}</span>
-            </div>
+              <span>{SITE.email}</span>
+            </a>
+            <p className="max-w-md text-center text-xs text-[#64748B] md:text-left">{SITE.address}</p>
           </div>
 
-          <a
-            href={SITE.whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F1F5F9] text-brand-blue transition-colors hover:bg-brand-blue hover:text-white"
-            aria-label="Chat on WhatsApp"
-          >
-            <MessageCircle className="h-5 w-5" />
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href={whatsappUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F1F5F9] text-[#25D366] transition-colors hover:bg-[#25D366] hover:text-white"
+              aria-label="Chat on WhatsApp"
+            >
+              <MessageCircle className="h-5 w-5" />
+            </a>
+            <a
+              href={SITE.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F1F5F9] text-[#E1306C] transition-colors hover:bg-[#E1306C] hover:text-white"
+              aria-label={`Instagram @${SITE.instagramHandle}`}
+            >
+              <InstagramIcon className="h-5 w-5" />
+            </a>
+          </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#E2E8F0] pt-8 md:flex-row">

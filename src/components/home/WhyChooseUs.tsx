@@ -1,45 +1,45 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Shield, Star, Headset, Truck, Clock, Tag } from "lucide-react";
+import { Shield, Truck, MapPin, Users, CheckCircle, Rocket } from "lucide-react";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 
 const FEATURES = [
   { 
-    icon: Shield, 
-    label: "Verified Drivers", 
-    text: "Every driver undergoes rigorous background checks and training to ensure your safety.",
-    color: "bg-brand-blue/5 text-brand-blue"
-  },
-  { 
-    icon: Star, 
-    label: "4.9/5 Rating", 
-    text: "Our commitment to excellence is reflected in thousands of 5-star reviews from happy travelers.",
-    color: "bg-brand-blue/5 text-brand-blue"
-  },
-  { 
-    icon: Headset, 
-    label: "24/7 Concierge", 
-    text: "Round-the-clock support for all your booking queries and on-road assistance.",
+    icon: MapPin, 
+    label: "GPS Equipped Vehicles", 
+    text: "All vehicles are equipped with GPS for easy navigation and your safety throughout the journey.",
     color: "bg-brand-blue/5 text-brand-blue"
   },
   { 
     icon: Truck, 
-    label: "Punctual Arrival", 
-    text: "We value your time. Our drivers arrive at least 15 minutes before your scheduled pickup.",
+    label: "Free Home Pickup & Drop", 
+    text: "We provide free home pickup and drop service for your convenience within Pune city limits.",
     color: "bg-brand-blue/5 text-brand-blue"
   },
   { 
-    icon: Clock, 
-    label: "Instant Booking", 
-    text: "Book your premium ride in under 60 seconds with our streamlined digital platform.",
+    icon: CheckCircle, 
+    label: "Economical & Reliable", 
+    text: "Affordable tour packages with reliable service. No hidden charges or surprise fees.",
     color: "bg-brand-blue/5 text-brand-blue"
   },
   { 
-    icon: Tag, 
-    label: "Fixed Pricing", 
-    text: "No hidden charges or surge pricing. What you see is exactly what you pay.",
+    icon: Shield, 
+    label: "Safe & Comfortable Journey", 
+    text: "Comfortable and safe journey guaranteed with well-maintained, clean vehicles.",
+    color: "bg-brand-blue/5 text-brand-blue"
+  },
+  { 
+    icon: Rocket, 
+    label: "Pre-Trip Vehicle Check", 
+    text: "We test all cabs before sending them to ensure they are road-ready and trouble-free.",
+    color: "bg-brand-blue/5 text-brand-blue"
+  },
+  { 
+    icon: Users, 
+    label: "Well Trained Drivers", 
+    text: "Professional, courteous, and well-trained drivers who prioritize your safety and comfort.",
     color: "bg-brand-blue/5 text-brand-blue"
   },
 ];

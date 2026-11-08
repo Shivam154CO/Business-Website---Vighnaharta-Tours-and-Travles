@@ -9,7 +9,6 @@ import {
   CalendarDays,
   MapPin,
   ShieldCheck,
-  Sparkles,
   Star,
   Users,
 } from "lucide-react";
@@ -27,44 +26,68 @@ type ShowcaseCar = {
 
 const CARS: ShowcaseCar[] = [
   {
-    name: "Innova Crysta",
-    tag: "Premium family",
-    image: "/Crysta.png",
-    accent: "#f5c76a",
-    rate: "₹22/km",
-    seats: "7 seats",
+    name: "Swift Dzire",
+    tag: "Economy",
+    image: "/images/fleet/maruti-swift-dzire.png",
+    accent: "#86efac",
+    rate: "₹12/km",
+    seats: "4 + 1",
+  },
+  {
+    name: "Toyota Etios",
+    tag: "Comfort",
+    image: "/images/fleet/toyota-etios.png",
+    accent: "#7ec8ff",
+    rate: "₹12-13/km",
+    seats: "4 + 1",
+  },
+  {
+    name: "Suzuki Ertiga",
+    tag: "Family MUV",
+    image: "/images/fleet/maruti-suzuki-sedan.png",
+    accent: "#38bdf8",
+    rate: "₹14-15/km",
+    seats: "6 + 1",
   },
   {
     name: "Toyota Innova",
     tag: "Best seller",
-    image: "/Innova.png",
-    accent: "#7ec8ff",
-    rate: "₹20/km",
-    seats: "7 seats",
+    image: "/images/fleet/toyota-innova.png",
+    accent: "#93c5fd",
+    rate: "₹19-20/km",
+    seats: "6+1 / 7+1",
   },
   {
     name: "Kia Carens",
     tag: "Modern comfort",
-    image: "/kia.png",
+    image: "/images/fleet/kia-carens.png",
     accent: "#c4b5fd",
-    rate: "₹20/km",
-    seats: "6 seats",
+    rate: "₹16-17/km",
+    seats: "6+1 / 7+1",
   },
   {
-    name: "Swift Dzire",
-    tag: "City smart",
-    image: "/Swift_Dzire.png",
-    accent: "#86efac",
-    rate: "₹12/km",
-    seats: "4 seats",
+    name: "Toyota Innova Crysta",
+    tag: "Premium",
+    image: "/images/fleet/toyota-innova-crysta.png",
+    accent: "#f5c76a",
+    rate: "₹19-20/km",
+    seats: "4 + 1",
+  },
+  {
+    name: "Mini Bus",
+    tag: "Group",
+    image: "/images/fleet/tempo-traveller-13-seater.png",
+    accent: "#a5b4fc",
+    rate: "₹24-28/km",
+    seats: "6 + 1",
   },
   {
     name: "Tempo Traveller",
     tag: "Group travel",
-    image: "/Traveller_13_Seater.png",
+    image: "/images/fleet/tempo-traveller-17-seater.png",
     accent: "#fdba74",
-    rate: "Package",
-    seats: "13-17 seats",
+    rate: "₹25-28/km",
+    seats: "6+1 / 7+1",
   },
 ];
 
@@ -150,9 +173,9 @@ export function HeroSection() {
             className="pt-2"
           >
             <h1 className="text-[clamp(3rem,6vw,6rem)] font-black leading-[0.9] tracking-[-0.065em] text-[#f9f7f3]">
-              Drive the
+              Welcome to
               <span className="block bg-[linear-gradient(90deg,#f7d98c_0%,#fbf0d2_40%,#b7d5ff_100%)] bg-clip-text text-transparent">
-                premium way.
+                Morya Travels
               </span>
             </h1>
 
@@ -317,8 +340,8 @@ export function HeroSection() {
                 </div>
               ) : (
                 <>
-                  <div className="mt-4 flex flex-wrap gap-4">
-                    <label className="flex-1 space-y-1.5">
+                  <div className="mt-4 flex flex-col gap-4">
+                    <label className="space-y-1.5">
                       <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-[#ccd7ea]">Message / Details</span>
                       <textarea
                         value={form.details}
@@ -329,14 +352,16 @@ export function HeroSection() {
                       />
                     </label>
 
-                    <button
-                      type="submit"
-                      disabled={submitting}
-                      className="inline-flex items-center justify-center gap-2 rounded-full bg-[#f5c76a] px-6 py-3 text-sm font-bold text-[#17120b] transition hover:bg-[#ffe0a3] shadow-[0_18px_45px_rgba(245,199,107,0.32)] disabled:opacity-60 disabled:cursor-not-allowed"
-                    >
-                      {submitting ? "Sending..." : "Send Enquiry"}
-                      <ArrowRight className="h-4 w-4" />
-                    </button>
+                    <div className="flex justify-center">
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-[#f5c76a] px-5 py-2.5 text-sm font-bold text-[#17120b] transition hover:bg-[#ffe0a3] shadow-[0_18px_45px_rgba(245,199,107,0.32)] disabled:opacity-60 disabled:cursor-not-allowed"
+                      >
+                        {submitting ? "Sending..." : "Send Enquiry"}
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   </div>
 
                   {submitStatus === "error" && (

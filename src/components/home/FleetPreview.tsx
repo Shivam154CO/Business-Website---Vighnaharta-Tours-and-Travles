@@ -1,61 +1,44 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { VehicleCard } from "@/components/ui/VehicleCard";
 import { SectionTitle } from "@/components/ui/SectionTitle";
+import type { Vehicle } from "@/constants/fleet";
 
 const FLEET_TYPES = [
   { key: "all", label: "All Vehicles" },
   { key: "sedan", label: "Sedan" },
-  { key: "suv", label: "SUV" },
-  { key: "luxury", label: "Luxury" },
+  { key: "suv", label: "SUV/MUV" },
   { key: "tempo", label: "Tempo" },
 ] as const;
 
 type FleetTabKey = (typeof FLEET_TYPES)[number]["key"];
 
-type FleetPreviewProps = {
-  vehicles: Array<{
-    id: string;
-    name: string;
-    type: "sedan" | "suv" | "luxury" | "tempo";
-    seats: number;
-    luggage: number;
-    ac: boolean;
-    ratePerKm: number;
-    minKm: number;
-    features: string[];
-    extraFeatures: string[];
-    badge: string;
-    badgeColor: string;
-    image: string;
-    packageRate?: number;
-  }>;
-};
-
-export function FleetPreview({ vehicles }: FleetPreviewProps) {
+export function FleetPreview({ vehicles }: { vehicles: Vehicle[] }) {
   const [tab, setTab] = useState<FleetTabKey>("all");
 
-  const filtered = tab === "all" ? vehicles : vehicles.filter((v) => v.type === tab);
+  const filtered =
+    tab === "all"
+      ? vehicles
+      : tab === "suv"
+        ? vehicles.filter((v) => v.type === "suv" || v.type === "muv")
+        : vehicles.filter((v) => v.type === tab);
 
   return (
-    <section className="py-20 md:py-24 bg-[#F8FAFC] border-t border-[#E2E8F0] relative overflow-hidden">
+    <section className="relative overflow-hidden border-t border-[#E2E8F0] bg-[#F8FAFC] py-20 md:py-24">
       <div className="container-page relative z-10">
-        <SectionTitle
-          title="Our Fleet"
-          subtitle="Well-maintained vehicles for every group size and budget."
-        />
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <SectionTitle title="Our Fleet" subtitle="Well-maintained vehicles for every group size and budget." />
+        <div className="mb-10 flex flex-wrap justify-center gap-2">
           {FLEET_TYPES.map((t) => (
             <button
               key={t.key}
               type="button"
               onClick={() => setTab(t.key)}
               aria-pressed={tab === t.key}
-              className={`px-5 py-2.5 min-h-11 rounded-full text-sm font-body font-medium transition-all ${
+              className={`min-h-11 rounded-full px-5 py-2.5 font-body text-sm font-medium transition-all ${
                 tab === t.key
                   ? "bg-brand-blue text-white shadow-[0_0_20px_rgba(30,79,216,0.35)]"
-                  : "bg-white border border-[#E2E8F0] text-[#64748B] hover:bg-[#F1F5F9]"
+                  : "border border-[#E2E8F0] bg-white text-[#64748B] hover:bg-[#F1F5F9]"
               }`}
             >
               {t.label}
@@ -63,16 +46,12 @@ export function FleetPreview({ vehicles }: FleetPreviewProps) {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {filtered.map((vehicle) => (
             <VehicleCard key={vehicle.id} vehicle={vehicle} />
           ))}
         </div>
-        {filtered.length === 0 && (
-          <div className="text-center py-20 text-[#64748B]">
-            No vehicles available in this category.
-          </div>
-        )}
+        {filtered.length === 0 && <div className="py-20 text-center text-[#64748B]">No vehicles available in this category.</div>}
       </div>
     </section>
   );

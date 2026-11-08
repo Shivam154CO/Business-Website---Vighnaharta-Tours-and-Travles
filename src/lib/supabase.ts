@@ -1,9 +1,43 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "";
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
+const supabasePublishableKey =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
+  process.env.SUPABASE_ANON_KEY ??
+  "";
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ??
+  process.env.SUPABASE_SECRET_KEY ??
+  process.env.SUPABASE_SERVICE_KEY ??
+  "";
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+function missingClient(message: string): SupabaseClient {
+  return new Proxy({} as SupabaseClient, {
+    get() {
+      throw new Error(message);
+    },
+  });
+}
+
+const hasPublicConfig = Boolean(supabaseUrl && supabasePublishableKey);
+const missingPublicConfigMessage =
+  "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY in vighnaharta-travels/.env.local, then restart the dev server.";
+
+// Public/browser-safe client (use with RLS-enabled public tables as appropriate).
+export const supabase: SupabaseClient = hasPublicConfig
+  ? createClient(supabaseUrl, supabasePublishableKey)
+  : missingClient(missingPublicConfigMessage);
+
+// Server-only privileged client. Falls back to publishable client if service role key is not set.
+export const supabaseAdmin: SupabaseClient = supabaseServiceKey
+  ? supabaseUrl
+    ? createClient(supabaseUrl, supabaseServiceKey, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      })
+    : missingClient(missingPublicConfigMessage)
+  : supabase;
 
 export type Database = {
   public: {

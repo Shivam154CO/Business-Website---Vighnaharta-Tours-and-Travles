@@ -4,7 +4,7 @@ import { X, Phone, Mail, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { SITE, NAV_LINKS } from "@/constants/site";
+import { SITE, NAV_LINKS, whatsappUrl } from "@/constants/site";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -39,13 +39,10 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 <Image
                   src={SITE.logo}
                   alt={`${SITE.name} logo`}
-                  width={72}
-                  height={72}
-                  className="h-9 w-9 shrink-0 rounded-lg object-contain"
+                  width={352}
+                  height={352}
+                  className="h-28 w-28 shrink-0 rounded-lg object-contain sm:h-32 sm:w-32"
                 />
-                <span className="truncate text-base font-display font-bold tracking-tight text-[#0F172A]">
-                  Morya Travels
-                </span>
               </div>
               <button
                 onClick={onClose}
@@ -80,21 +77,27 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             </nav>
 
             <div className="mt-auto space-y-4 border-t border-[#E2E8F0] pt-6">
-              <div className="flex items-center gap-3 px-2">
-                <Phone className="h-5 w-5 shrink-0 text-brand-blue" />
+              <div className="flex items-start gap-3 px-2">
+                <Phone className="h-5 w-5 shrink-0 text-brand-blue mt-0.5" />
                 <div className="min-w-0">
-                  <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-[#64748B]">Call Us</p>
+                  <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-[#64748B]">Call / WhatsApp</p>
                   <a href={`tel:${SITE.phone}`} className="block truncate text-sm font-medium text-[#0F172A] hover:text-brand-blue">
                     {SITE.phoneDisplay}
                   </a>
+                  <a href={`tel:${SITE.phone2}`} className="block truncate text-sm font-medium text-[#0F172A] hover:text-brand-blue">
+                    {SITE.phone2Display}
+                  </a>
                 </div>
               </div>
-              <div className="flex items-center gap-3 px-2">
-                <Mail className="h-5 w-5 shrink-0 text-brand-blue" />
+              <div className="flex items-start gap-3 px-2">
+                <Mail className="h-5 w-5 shrink-0 text-brand-blue mt-0.5" />
                 <div className="min-w-0">
-                  <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-[#64748B]">Email</p>
+                  <p className="text-[11px] font-mono uppercase tracking-[0.12em] text-[#64748B]">Email &amp; Instagram</p>
                   <a href={`mailto:${SITE.email}`} className="block break-all text-sm font-medium text-[#0F172A] hover:text-brand-blue">
                     {SITE.email}
+                  </a>
+                  <a href={SITE.instagram} target="_blank" rel="noopener noreferrer" className="block text-sm font-medium text-[#0F172A] hover:text-brand-blue">
+                    @{SITE.instagramHandle}
                   </a>
                 </div>
               </div>
@@ -116,7 +119,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                 Book Now
               </Link>
               <a
-                href={SITE.whatsapp}
+                href={whatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1EBE5A]"

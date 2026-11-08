@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { useState } from "react";
+import { motion, Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Vehicle } from "@/constants/fleet";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
-import { Users, Briefcase, Snowflake, CheckCircle2, Sparkles } from "lucide-react";
+import { Users, Briefcase, Snowflake, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,15 +17,8 @@ interface VehicleCardProps {
 }
 
 export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCardProps) {
-  const [featureIndex, setFeatureIndex] = useState(0);
+  const extraFeatures = (vehicle.extraFeatures ?? []).map((f) => String(f)).filter(Boolean);
   const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setFeatureIndex((prev) => (prev + 1) % vehicle.extraFeatures.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [vehicle.extraFeatures.length]);
 
   const handleCarClick = () => {
     if (isAnimating) return;
@@ -47,9 +40,13 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
     }
   };
 
-  const price = vehicle.type === 'tempo' 
-    ? (vehicle.packageRate ? Math.floor(vehicle.packageRate/300) : 20) 
+  const price = vehicle.type === 'tempo'
+    ? (vehicle.packageRate ? Math.floor(vehicle.packageRate/300) : vehicle.ratePerKm)
     : vehicle.ratePerKm;
+  const capacityFeature = extraFeatures.find((f) => f.toLowerCase().includes("passenger capacity"));
+  const capacityText = capacityFeature
+    ? capacityFeature.replace(/ passenger capacity.*/i, "")
+    : `${Math.max(0, vehicle.seats - 1)} + 1`;
 
   return (
     <GlassCard
@@ -113,6 +110,9 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
             <div className="text-[10px] font-mono text-[#64748B] uppercase">
               Per KM
             </div>
+            <div className="text-[10px] font-mono text-[#94A3B8] uppercase">
+              {vehicle.minKm} km/day · Toll/Parking extra
+            </div>
           </div>
         </div>
 
@@ -120,7 +120,7 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
         <div className="grid grid-cols-3 gap-4 mb-8 py-4 border-y border-[#F1F5F9]">
           <div className="flex flex-col items-center gap-1.5">
             <Users className="w-4 h-4 text-brand-blue" />
-            <span className="text-[11px] font-medium text-[#475569]">{vehicle.seats}+1 Seats</span>
+            <span className="text-[11px] font-medium text-[#475569] text-center">{capacityText} Seats</span>
           </div>
           <div className="flex flex-col items-center gap-1.5 border-x border-[#F1F5F9]">
             <Briefcase className="w-4 h-4 text-brand-blue" />
@@ -128,26 +128,15 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
           </div>
           <div className="flex flex-col items-center gap-1.5">
             <Snowflake className="w-4 h-4 text-brand-blue" />
-            <span className="text-[11px] font-medium text-[#475569]">{vehicle.ac ? "Climate Control" : "Standard"}</span>
+            <span className="text-[11px] font-medium text-[#475569]">{vehicle.ac ? "AC / Non-AC" : "Standard"}</span>
           </div>
         </div>
 
-        {/* Dynamic Feature - "The Delight" */}
-        <div className="relative mb-8 h-12 flex items-center justify-center overflow-hidden rounded-xl bg-gray-50 border border-gray-100 px-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={featureIndex}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="flex items-center gap-3"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-brand-blue shrink-0" />
-              <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-[0.2em] text-center">
-                {vehicle.extraFeatures[featureIndex]}
-              </span>
-            </motion.div>
-          </AnimatePresence>
+        {/* Feature */}
+        <div className="mb-8 flex min-h-12 items-center justify-center rounded-xl bg-gray-50 border border-gray-100 px-4 py-3">
+          <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-[0.2em] text-center">
+            {extraFeatures[0] ?? vehicle.name}
+          </span>
         </div>
 
         {/* Action Row */}

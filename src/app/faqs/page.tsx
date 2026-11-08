@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
 import { SectionTitle } from "@/components/ui/SectionTitle";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { FAQAccordion } from "@/components/ui/FAQAccordion";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { FAQS } from "@/constants/faqs";
-import { SITE } from "@/constants/site";
+import { whatsappUrl } from "@/constants/site";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Frequently Asked Questions",
+export const metadata: Metadata = buildMetadata({
+  title: "Frequently Asked Questions — Cab Booking in Pune",
   description:
     "Answers to common questions about booking a cab with Morya Travels — outstation rates, tolls, Tempo Travellers, airport transfers and more.",
-  alternates: { canonical: "/faqs" },
-};
+  canonical: "/faqs",
+});
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -25,6 +27,10 @@ const faqJsonLd = {
 export default function FaqsPage() {
   return (
     <div className="flex flex-col flex-1">
+      <Breadcrumbs items={[
+        { label: "Home", href: "/" },
+        { label: "FAQs", href: "/faqs" },
+      ]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
@@ -57,7 +63,7 @@ export default function FaqsPage() {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <AnimatedButton variant="gold" size="md" href={SITE.whatsapp}>
+              <AnimatedButton variant="gold" size="md" href={whatsappUrl("Hi Morya Travels, I have a question before booking. Could you please assist me?")}>
                 Chat on WhatsApp
               </AnimatedButton>
               <AnimatedButton variant="ghost" size="md" href="/contact">

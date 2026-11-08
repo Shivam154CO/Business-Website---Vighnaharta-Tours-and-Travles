@@ -14,13 +14,13 @@ type PrismaModelLike<T = Record<string, unknown>> = {
 }
 
 type PrismaClientLike = {
-  admin: PrismaModelLike<any>;
-  booking: PrismaModelLike<any>;
-  lead: PrismaModelLike<any>;
-  notification: PrismaModelLike<any>;
-  vehicle: PrismaModelLike<any>;
-  route: PrismaModelLike<any>;
-  package: PrismaModelLike<any>;
+  admin: PrismaModelLike;
+  booking: PrismaModelLike;
+  lead: PrismaModelLike;
+  notification: PrismaModelLike;
+  vehicle: PrismaModelLike;
+  route: PrismaModelLike;
+  package: PrismaModelLike;
 };
 
 type PrismaClientFactory = new (...args: unknown[]) => PrismaClientLike;
@@ -29,13 +29,14 @@ const createNoopPrisma = (): PrismaClientLike =>
   new Proxy(
     {},
     {
-      get: (_target, modelName) => {
+      get: () => {
         const model = new Proxy(
           {},
           {
             get: (_mTarget, methodName) => {
               const method = String(methodName);
-              return async (..._args: unknown[]) => {
+              return async (...methodArgs: unknown[]) => {
+                void methodArgs;
                 if (method === "count") return 0;
                 if (method === "groupBy") return [];
                 if (method === "findUnique") return null;
@@ -64,6 +65,7 @@ export const prisma: PrismaClientLike = (() => {
   if (globalForPrisma.prisma) return globalForPrisma.prisma;
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const prismaModule = require("@prisma/client") as {
       PrismaClient?: PrismaClientFactory;
     };

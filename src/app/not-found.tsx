@@ -1,10 +1,24 @@
 import Link from "next/link";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CarFront } from "lucide-react";
+import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "Page Not Found — Morya Travels",
+  description: "The page you are looking for could not be found. Book a cab or return to the homepage.",
+  canonical: "/404",
+  noIndex: true,
+});
 
 export default function NotFound() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
+      <Breadcrumbs items={[
+        { label: "Home", href: "/" },
+        { label: "404", href: "/404" },
+      ]} />
       <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-blue/10 text-brand-blue">
         <CarFront className="h-8 w-8" />
       </div>

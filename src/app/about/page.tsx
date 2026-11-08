@@ -2,29 +2,34 @@ import { SectionTitle } from "@/components/ui/SectionTitle";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { SafeImage } from "@/components/ui/SafeImage";
-import { IMG } from "@/constants/routes";
-import { Star, Clock, Car, Phone, Mail } from "lucide-react";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
+import { Phone, Mail } from "lucide-react";
 import type { Metadata } from "next";
+import { buildMetadata, contactSchema } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About Us",
+export const metadata: Metadata = buildMetadata({
+  title: "About Morya Travels — Trusted Pune Travel Partner Since 2011",
   description:
-    "Morya Travels is a Pune-based travel partner offering outstation cabs, airport transfers, pilgrimage trips and group travel since 2011.",
-  alternates: { canonical: "/about" },
-};
+    "Morya Travels is a Pune-based travel partner offering outstation cabs, airport transfers, pilgrimage trips and group travel since 2011. Clean cabs, verified drivers, transparent pricing.",
+  canonical: "/about",
+});
 
-const ABOUT_HERO = IMG(
-  "clean white SUV taxi driving on a scenic green highway in maharashtra india, bright daylight, travel photography",
-  "landscape_16_9",
-);
+const aboutJsonLd = [contactSchema()];
 
-const STORY_IMAGE = IMG(
-  "happy indian family with luggage beside a clean white car ready for a road trip, bright daylight",
-);
+const ABOUT_HERO = "/images/brand/about-story.png";
+const STORY_IMAGE = "/images/brand/about-journey.png";
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col flex-1">
+      <Breadcrumbs items={[
+        { label: "Home", href: "/" },
+        { label: "About Us", href: "/about" },
+      ]} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }}
+      />
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] to-white pointer-events-none" />
         <div className="container-page relative z-10 text-center">
@@ -40,7 +45,8 @@ export default function AboutPage() {
               src={ABOUT_HERO}
               alt="Morya Travels cab on a scenic Maharashtra highway"
               priority
-              sizes="(max-width: 1024px) 100vw, 80rem"
+              sizes="(max-width: 900px) 100vw, 80rem"
+              className="object-cover object-center"
             />
           </div>
         </div>
@@ -54,75 +60,97 @@ export default function AboutPage() {
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <GlassCard className="p-12">
-              <p className="text-[#64748B] leading-relaxed mb-6">
-                Morya Travels was founded with a simple mission: to make
-                intercity travel safe, comfortable, and affordable for everyone.
-                Whether it&rsquo;s a spiritual trip to Shirdi, a weekend getaway to
-                Lonavala, or a corporate transfer to Pune Airport — we&rsquo;ve got you
-                covered.
-              </p>
-              <p className="text-[#64748B] leading-relaxed">
-                With over 15 years on the road, more than 1 lakh trips completed,
-                and a fleet of 50+ well-maintained vehicles, we&rsquo;re the name Pune
-                trusts for outstation tours, airport transfers, pilgrimage cabs, and
-                group travel.
-              </p>
+<p className="text-[#64748B] leading-relaxed mb-6">
+                  We offer affordable tour packages for everyone to enjoy a bagful of
+                  cheerful moments &amp; unforgettable experiences. Our priority is
+                  customer satisfaction.
+                </p>
+                <p className="text-[#64748B] leading-relaxed">
+                  Vehicles are equipped with GPS for easy navigation and safety. We
+                  provide free home pick-up and drop, economical and reliable
+                  service, comfortable and safe journeys, well-trained drivers, and
+                  efficient timely services.
+                </p>
             </GlassCard>
             <div className="relative h-72 lg:h-[420px] rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-sm bg-[#F1F5F9]">
               <SafeImage
                 src={STORY_IMAGE}
                 alt="Passengers travelling with Morya Travels"
                 sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            <GlassCard className="p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue mb-4">
-                <Star className="w-5 h-5" />
-              </div>
-              <h3 className="font-display font-bold text-[#0F172A] mb-1">4.9★ Rated</h3>
-              <p className="text-[#64748B] text-sm">Trusted by thousands of happy customers across Maharashtra.</p>
-            </GlassCard>
-            <GlassCard className="p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue mb-4">
-                <Clock className="w-5 h-5" />
-              </div>
-              <h3 className="font-display font-bold text-[#0F172A] mb-1">24/7 Service</h3>
-              <p className="text-[#64748B] text-sm">Book anytime, travel anytime. We never sleep so you can rest easy.</p>
-            </GlassCard>
-            <GlassCard className="p-6 rounded-xl border border-[#E2E8F0] shadow-sm">
-              <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue mb-4">
-                <Car className="w-5 h-5" />
-              </div>
-              <h3 className="font-display font-bold text-[#0F172A] mb-1">50+ Vehicles</h3>
-              <p className="text-[#64748B] text-sm">From sedans and SUVs to 17-seater Tempo Travellers.</p>
-            </GlassCard>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {[
+              "Economical Transfers",
+              "Car Hire Company in Pune",
+              "Well Trained Drivers",
+              "Online Booking",
+            ].map((label) => (
+              <GlassCard key={label} className="p-6 rounded-xl border border-[#E2E8F0] shadow-sm text-center">
+                <h3 className="font-display font-bold text-[#0F172A]">{label}</h3>
+              </GlassCard>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="py-20 border-t border-[#E2E8F0] bg-[#F8FAFC]">
         <div className="container-page text-center">
-          <SectionTitle title="Meet the Owner" subtitle="Jay Sevalal" />
-          <GlassCard className="max-w-md mx-auto p-8 rounded-2xl flex flex-col items-center gap-4 border border-[#E2E8F0] shadow-sm">
-            <div className="w-20 h-20 rounded-full bg-brand-blue/20 flex items-center justify-center text-brand-blue-light text-3xl mb-2">
-              JS
-            </div>
-            <h3 className="font-display font-bold text-[#0F172A]">Jay Sevalal</h3>
-            <p className="text-[#64748B] text-sm">Founder & Owner</p>
-            <div className="flex gap-3 mt-4">
-              <a href="tel:8999514635" className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-[#0F172A] border border-[#E2E8F0] hover:bg-[#F1F5F9] transition-colors">
-                <Phone className="w-4 h-4 text-brand-blue" />
-                8999514635
-              </a>
-              <a href="mailto:info@moryatravel.in" className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-[#0F172A] border border-[#E2E8F0] hover:bg-[#F1F5F9] transition-colors">
-                <Mail className="w-4 h-4 text-brand-blue" />
-                Email
-              </a>
-            </div>
-          </GlassCard>
+          <SectionTitle title="Meet Our Team" subtitle="The people behind Morya Travels" />
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 max-w-3xl mx-auto">
+<GlassCard className="overflow-hidden rounded-2xl border border-[#E2E8F0] shadow-sm">
+               <div className="relative h-[330px] w-full overflow-hidden bg-[#F1F5F9]">
+                 <SafeImage
+src="/images/brand/profile-ashvin-rathod.png"
+                   alt="Ashvin Rathod"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   className="h-full w-full object-cover object-top"
+                 />
+               </div>
+               <div className="p-8 text-left">
+                <h3 className="font-display text-2xl font-bold text-[#0F172A]">Ashvin Rathod</h3>
+                <p className="mt-1 text-sm font-medium text-brand-blue">Founder & Owner</p>
+                <div className="mt-5 space-y-3 text-sm text-[#475569]">
+                  <a href="tel:8999514635" className="flex items-center gap-3 hover:text-brand-blue">
+                    <Phone className="h-4 w-4 text-brand-blue" />
+                    +91 89995 14635
+                  </a>
+                  <a href="mailto:ashwinavinashrathod@gmail.com" className="flex items-center gap-3 hover:text-brand-blue">
+                    <Mail className="h-4 w-4 text-brand-blue" />
+                    ashwinavinashrathod@gmail.com
+                  </a>
+                </div>
+              </div>
+            </GlassCard>
+
+            <GlassCard className="overflow-hidden rounded-2xl border border-[#E2E8F0] shadow-sm">
+<div className="relative h-[330px] w-full overflow-hidden bg-[#F1F5F9]">
+                 <SafeImage
+                   src="/images/brand/profile-ritesh-rathod.jpg"
+                   alt="Ritesh Rathod"
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   className="h-full w-full object-cover object-center"
+                 />
+               </div>
+               <div className="p-8 text-left">
+                <h3 className="font-display text-2xl font-bold text-[#0F172A]">Ritesh Rathod</h3>
+                <p className="mt-1 text-sm font-medium text-brand-blue">Director</p>
+                <div className="mt-5 space-y-3 text-sm text-[#475569]">
+                  <a href="tel:9322291339" className="flex items-center gap-3 hover:text-brand-blue">
+                    <Phone className="h-4 w-4 text-brand-blue" />
+                    +91 93222 91339
+                  </a>
+                  <a href="mailto:riteshrathod5614@gmail.com" className="flex items-center gap-3 hover:text-brand-blue">
+                    <Mail className="h-4 w-4 text-brand-blue" />
+                    riteshrathod5614@gmail.com
+                  </a>
+                </div>
+              </div>
+            </GlassCard>
+          </div>
         </div>
       </section>
 

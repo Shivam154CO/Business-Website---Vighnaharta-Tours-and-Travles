@@ -4,7 +4,7 @@ import { ArrowRight, Clock } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { SafeImage } from "@/components/ui/SafeImage";
-import { SITE } from "@/constants/site";
+import { whatsappUrl } from "@/constants/site";
 import { IMG } from "@/constants/routes";
 
 const CTA_BACKGROUND = IMG(
@@ -37,7 +37,7 @@ export function CTABanner() {
               Book Now
             </AnimatedButton>
             <a
-              href={SITE.whatsapp}
+              href={whatsappUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="flex w-full sm:w-auto items-center justify-center gap-2 px-8 py-4 min-h-[52px] rounded-full border border-[#E2E8F0] text-sm font-body font-semibold text-[#0F172A] hover:bg-[#F1F5F9] transition-colors"

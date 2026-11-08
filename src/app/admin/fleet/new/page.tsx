@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const emptyForm = {
@@ -14,12 +15,18 @@ const emptyForm = {
   minKm: 300,
   badge: "New",
   badgeColor: "#3B82F6",
-  image: "/Swift_Dzire.png",
+  image: "/images/fleet/maruti-swift-dzire.png",
   features: "AC,GPS Tracked,Clean Interior",
   extraFeatures: "Reliable,Comfortable,Professional Driver",
   packageRate: "",
   available: true,
 };
+
+function getCsrf() {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie.match(/(?:^|; )vgh_admin_csrf=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : "";
+}
 
 export default function NewVehiclePage() {
   const router = useRouter();
@@ -34,7 +41,8 @@ export default function NewVehiclePage() {
 
     const response = await fetch("/api/admin/fleet", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-csrf-token": getCsrf() },
+      credentials: "same-origin",
       body: JSON.stringify({
         ...form,
         packageRate: form.packageRate ? Number(form.packageRate) : null,
@@ -127,7 +135,7 @@ export default function NewVehiclePage() {
           {error ? <p className="text-sm text-red-600">{error}</p> : null}
 
           <div className="flex items-center justify-end gap-3">
-            <a href="/admin/fleet" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700">Cancel</a>
+            <Link href="/admin/fleet" className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700">Cancel</Link>
             <button disabled={saving} className="rounded-full bg-brand-blue px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-70">
               {saving ? "Saving..." : "Save vehicle"}
             </button>

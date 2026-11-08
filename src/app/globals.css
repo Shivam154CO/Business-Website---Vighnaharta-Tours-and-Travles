@@ -1,6 +1,11 @@
 @import "tailwindcss";
+@source "../**/*.{js,ts,jsx,tsx,mdx}";
 
 @theme {
+  --font-display: var(--font-outfit-src), "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter-src), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-src), "JetBrains Mono", ui-monospace, monospace;
+
   --color-brand-blue: #1E4FD8;
   --color-brand-blue-light: #3B72FF;
   --color-accent-gold: #F59E0B;
@@ -8,43 +13,21 @@
 
   --color-text-primary: #0F172A;
   --color-text-muted: #64748B;
-
   --color-border-light: #E2E8F0;
   --color-border-medium: #CBD5E1;
-
-  --font-display: var(--font-outfit-src), "Outfit", ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-inter-src), "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono-src), "JetBrains Mono", ui-monospace, monospace;
+  --color-bg-dark: #0F172A;
+  --color-bg-card: #F8FAFC;
 }
 
 :root {
   --page-max-width: 1280px;
   --page-padding: clamp(1rem, 2vw, 2rem);
 
-  --color-bg-dark: #0F172A;
-  --color-bg-card: #F8FAFC;
   --color-bg-glass: rgba(248, 250, 252, 0.9);
-
-  --color-brand-blue: #1E4FD8;
-  --color-brand-blue-light: #3B72FF;
   --color-brand-light: #3B72FF;
-
-  --color-accent-gold: #F59E0B;
-  --color-accent-orange: #FF6B2B;
-
-  --color-text-primary: #0F172A;
-  --color-text-muted: #64748B;
-
-  --color-border-light: #E2E8F0;
-  --color-border-medium: #CBD5E1;
-
   --color-success: #10B981;
   --color-warning: #FBBF24;
   --color-error: #EF4444;
-
-  --font-display: var(--font-outfit-src), "Outfit", ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-inter-src), "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono-src), "JetBrains Mono", ui-monospace, monospace;
 }
 
 html {
@@ -60,6 +43,12 @@ html.theme-dark { color-scheme: dark; }
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
+  }
+
+  select,
+  option {
+    color: #0f172a;
+    background-color: #ffffff;
   }
 
   body {
@@ -150,3 +139,26 @@ html.theme-dark { color-scheme: dark; }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Booking success animation (Google Pay–style) */
+@keyframes booking-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes booking-ring {
+  0% { transform: scale(0.85); opacity: 0; box-shadow: 0 0 0 0 rgba(16,185,129,0.35); }
+  70% { box-shadow: 0 0 0 18px rgba(16,185,129,0); }
+  100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+}
+@keyframes booking-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes booking-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.booking-success-pop { animation: booking-pop 420ms cubic-bezier(.2,.9,.2,1) both; }
+.booking-success-ring { animation: booking-ring 700ms cubic-bezier(.2,.9,.2,1) both; }
+.booking-success-check path { stroke-dasharray: 48; stroke-dashoffset: 48; animation: booking-draw 420ms 220ms ease-out forwards; }
+.booking-success-text { animation: booking-fade-up 360ms 320ms ease-out both; }
