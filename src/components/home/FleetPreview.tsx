@@ -25,7 +25,7 @@ export function FleetPreview({ vehicles }: { vehicles: Vehicle[] }) {
         : vehicles.filter((v) => v.type === tab);
 
   return (
-    <section className="relative overflow-hidden border-t border-[#E2E8F0] bg-[#F8FAFC] py-20 md:py-24">
+    <section className="relative overflow-hidden border-t border-[#E2E8F0] bg-[#F8FAFC] py-12 md:py-16">
       <div className="container-page relative z-10">
         <SectionTitle title="Our Fleet" subtitle="Well-maintained vehicles for every group size and budget." />
         <div className="mb-10 flex flex-wrap justify-center gap-2">

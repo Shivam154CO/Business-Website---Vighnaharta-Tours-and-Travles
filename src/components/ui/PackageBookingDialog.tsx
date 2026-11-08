@@ -55,7 +55,7 @@ export function PackageBookingDialog({ isOpen, onClose, packageTitle }: PackageB
     }
   };
 
-  const whatsappMessage = `Hi Morya Travels, I would like to book the "${packageTitle}" package.\n\nName: ${form.name}\nPhone: ${form.phone}\nDate: ${form.date || "Not specified"}\nPassengers: ${form.passengers}\n\nPlease share availability and final fare details.`;
+  const whatsappMessage = `Hi Morya Travels, I would like to book the &ldquo;${packageTitle}&rdquo; package.\n\nName: ${form.name}\nPhone: ${form.phone}\nDate: ${form.date || "Not specified"}\nPassengers: ${form.passengers}\n\nPlease share availability and final fare details.`;
 
 if (!isOpen) return null;
 
@@ -65,13 +65,13 @@ if (!isOpen) return null;
       <div className="relative w-full max-w-sm mx-auto">
         <GlassCard className="rounded-2xl border border-[#E2E8F0] shadow-2xl bg-white">
           <div className="flex items-center justify-between px-4 py-3">
-            <h2 className="font-display text-lg font-bold text-[#0F172A]">Book "{packageTitle}"</h2>
+            <h2 className="font-display text-lg font-bold text-[#0F172A]">Book &ldquo;{packageTitle}&rdquo;</h2>
             <button type="button" onClick={onClose} className="rounded-full p-1.5 text-[#64748B] hover:bg-[#F1F5F9]"><X className="h-4 w-4" /></button>
           </div>
 
           {status === "success" ? (
             <div className="px-4 py-5 text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-blue/10 text-brand-blue">
                 <Phone className="h-6 w-6" />
               </div>
               <h3 className="mt-3 font-display text-base font-bold text-[#0F172A]">Booking Request Sent</h3>
@@ -145,7 +145,7 @@ if (!isOpen) return null;
                 </label>
 
                 {status === "error" && (
-                  <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-2 text-xs text-red-600">{error}</div>
+                  <div className="rounded-xl border border-brand-blue/30 bg-brand-blue/10 p-2 text-xs text-brand-blue">{error}</div>
                 )}
               </div>
 

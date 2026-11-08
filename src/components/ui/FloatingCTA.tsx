@@ -32,7 +32,7 @@ export function FloatingCTA() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={scrollToTop}
-            className="fixed bottom-24 right-5 z-[100] flex h-12 w-12 items-center justify-center rounded-full border border-[#E2E8F0] bg-white text-[#0F172A] shadow-lg transition hover:bg-[#F8FAFC]"
+            className="fixed bottom-24 right-5 z-[100] flex h-12 w-12 items-center justify-center rounded-full bg-brand-blue text-white shadow-lg transition hover:bg-brand-blue-light"
             aria-label="Scroll to top"
           >
             <ArrowUp className="h-5 w-5" />
@@ -48,7 +48,7 @@ export function FloatingCTA() {
             exit={{ y: 100, x: "-50%", opacity: 0 }}
             className="fixed bottom-8 left-1/2 z-[100] w-auto"
           >
-            <div className="flex items-center gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-[0_20px_50px_rgba(0,0,0,0.15)] ring-1 ring-gray-950/5">
+            <div className="flex items-center gap-2 rounded-2xl border border-border-light bg-white p-2 shadow-[0_20px_50px_rgba(0,0,0,0.15)] ring-1 ring-black/5">
               <button
                 onClick={() => router.push("/book")}
                 className="group flex items-center gap-2 rounded-xl bg-brand-blue px-6 py-3 text-xs font-bold text-white transition-all hover:bg-brand-blue-light hover:scale-105 active:scale-95"
@@ -61,9 +61,9 @@ export function FloatingCTA() {
                 href={whatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl border border-gray-100 bg-white px-6 py-3 text-xs font-bold text-[#0F172A] transition-all hover:bg-gray-50 hover:scale-105 active:scale-95"
+                className="flex items-center gap-2 rounded-xl border border-border-light bg-white px-6 py-3 text-xs font-bold text-text-primary transition-all hover:bg-bg-card hover:scale-105 active:scale-95"
               >
-                <MessageCircle className="h-4 w-4 text-[#25D366]" />
+                <MessageCircle className="h-4 w-4 text-brand-blue" />
                 WhatsApp
               </a>
             </div>

@@ -14,7 +14,7 @@ const CTA_BACKGROUND = IMG(
 
 export function CTABanner() {
   return (
-    <section className="py-16 md:py-20 relative overflow-hidden">
+    <section className="py-10 md:py-12 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <SafeImage src={CTA_BACKGROUND} alt="" sizes="100vw" className="opacity-[0.12]" />
       </div>

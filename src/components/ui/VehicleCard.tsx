@@ -59,7 +59,7 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
     >
       {/* Car Image Area */}
       <div 
-        className="relative h-56 w-full flex items-center justify-center p-6 cursor-pointer"
+        className="relative aspect-[4/3] w-full flex items-center justify-center p-6 cursor-pointer"
         onClick={(e) => {
           e.stopPropagation();
           handleCarClick();
@@ -76,7 +76,6 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
             fill
             className="object-contain"
             priority
-            unoptimized
           />
         </motion.div>
 
@@ -133,7 +132,7 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
         </div>
 
         {/* Feature */}
-        <div className="mb-8 flex min-h-12 items-center justify-center rounded-xl bg-gray-50 border border-gray-100 px-4 py-3">
+        <div className="mb-8 flex min-h-12 items-center justify-center rounded-xl bg-bg-card border border-border-light px-4 py-3">
           <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-[0.2em] text-center">
             {extraFeatures[0] ?? vehicle.name}
           </span>
@@ -155,7 +154,7 @@ export function VehicleCard({ vehicle, selected = false, onSelect }: VehicleCard
           </AnimatedButton>
           
           <button 
-            className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-50 text-[#64748B] border border-gray-100 transition-colors hover:bg-brand-blue hover:text-white"
+            className="flex h-11 w-11 items-center justify-center rounded-xl bg-bg-card text-text-muted border border-border-light transition-colors hover:bg-brand-blue hover:text-white"
             onClick={(e) => {
               e.stopPropagation();
               handleCarClick();

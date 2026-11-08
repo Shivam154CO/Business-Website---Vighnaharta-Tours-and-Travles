@@ -60,8 +60,8 @@ return (
           <Link href="/fleet" className="mb-8 inline-flex items-center gap-2 text-sm text-[#64748B] transition-colors hover:text-[#0F172A]">
             <ArrowLeft className="h-4 w-4" /> Back to Fleet
           </Link>
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-<div className="relative h-72 overflow-hidden rounded-2xl border border-[#E2E8F0] bg-[#F1F5F9] shadow-sm md:h-96 lg:h-[28rem]">
+<div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+<div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#E2E8F0] bg-[#F1F5F9] shadow-sm">
               <SafeImage src={vehicle.image} alt={`${vehicle.name} - Morya Travels`} priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-contain p-6" />
               <div className="absolute left-4 top-4"><span className="rounded-full px-3 py-1 font-mono text-xs font-bold text-white" style={{ backgroundColor: vehicle.badgeColor }}>{vehicle.badge}</span></div>
             </div>
@@ -90,7 +90,7 @@ return (
               {otherVehicles.map((v) => (
                 <GlassCard key={v.id} padded={false} className="group overflow-hidden rounded-xl border border-[#E2E8F0] transition-all hover:border-brand-blue">
                   <Link href={`/fleet/${v.id}`} className="block">
-                    <div className="relative h-40 bg-[#F1F5F9]"><SafeImage src={v.image} alt={v.name} sizes="33vw" className="object-contain p-3" /></div>
+                    <div className="relative aspect-[4/3] bg-[#F1F5F9]"><SafeImage src={v.image} alt={v.name} sizes="33vw" className="object-contain p-3" /></div>
                     <div className="p-4"><h3 className="font-display font-bold text-[#0F172A] transition-colors group-hover:text-brand-blue">{v.name}</h3><p className="mt-1 text-xs text-[#64748B]">{v.seats} seats · {v.ac ? "AC" : "Non-AC"} · {v.type === "tempo" ? `₹${v.packageRate} pkg` : `₹${v.ratePerKm}/km`}</p></div>
                   </Link>
                 </GlassCard>

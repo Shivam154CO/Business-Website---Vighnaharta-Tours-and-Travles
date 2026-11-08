@@ -5,7 +5,7 @@ import { FAQAccordion } from "@/components/ui/FAQAccordion";
 
 export function FAQSection() {
   return (
-    <section className="bg-[#F8FAFC] py-20">
+    <section className="bg-[#F8FAFC] py-12">
       <div className="container-page">
         <SectionTitle
           title="Frequently Asked Questions"

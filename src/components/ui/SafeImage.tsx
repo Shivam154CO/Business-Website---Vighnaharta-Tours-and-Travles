@@ -33,9 +33,8 @@ export function SafeImage({
       fill
       sizes={sizes}
       priority={priority}
-      unoptimized
-      onError={() => setFailed(true)}
       className={cn("object-cover object-center", className)}
+      onError={() => setFailed(true)}
     />
   );
 }

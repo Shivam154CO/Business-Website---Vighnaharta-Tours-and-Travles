@@ -39,7 +39,7 @@ export const FLEET: Vehicle[] = [
       "Spacious boot for 2 bags",
     ],
     badge: "Economy",
-    badgeColor: "#10B981",
+    badgeColor: "var(--color-brand-blue)",
     image: "/images/fleet/maruti-swift-dzire.png",
   },
   {
@@ -186,7 +186,7 @@ export const FLEET: Vehicle[] = [
       "Group/outstation travel",
     ],
     badge: "Tempo",
-    badgeColor: "#F59E0B",
+    badgeColor: "var(--color-accent-gold)",
     image: "/images/fleet/tempo-traveller-17-seater.png",
   },
 ];

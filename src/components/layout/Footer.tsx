@@ -17,7 +17,7 @@ export function Footer() {
   return (
     <footer className="border-t border-[#E2E8F0] bg-white">
       <div className="container-page py-12 md:py-16">
-        <div className="mb-12 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+        <div className="mb-12 grid grid-cols-2 gap-8 sm:grid-cols-2 md:grid-cols-4">
           <div className="sm:col-span-2 md:col-span-1">
             <div className="mb-4 flex items-center gap-3">
               <Image
@@ -66,9 +66,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-6 border-t border-[#E2E8F0] pt-8 md:flex-row">
-          <div className="flex flex-col items-center gap-3 text-sm text-[#64748B] md:items-start">
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:justify-start">
+        <div className="flex flex-col items-center justify-between gap-6 border-t border-border-light pt-8 md:flex-row">
+          <div className="flex flex-col items-center gap-3 text-sm text-text-muted md:items-start w-full md:w-auto">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:justify-start w-full">
               <a href={`tel:${SITE.phone}`} className="flex items-center gap-2 text-[#0F172A] hover:text-brand-blue">
                 <Phone className="h-4 w-4 text-brand-blue" />
                 <span>{SITE.phoneDisplay}</span>
@@ -90,7 +90,7 @@ export function Footer() {
               href={whatsappUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F1F5F9] text-[#25D366] transition-colors hover:bg-[#25D366] hover:text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-bg-card text-brand-blue transition-colors hover:bg-brand-blue hover:text-white"
               aria-label="Chat on WhatsApp"
             >
               <MessageCircle className="h-5 w-5" />
@@ -99,7 +99,7 @@ export function Footer() {
               href={SITE.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F1F5F9] text-[#E1306C] transition-colors hover:bg-[#E1306C] hover:text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-bg-card text-brand-blue transition-colors hover:bg-brand-blue hover:text-white"
               aria-label={`Instagram @${SITE.instagramHandle}`}
             >
               <InstagramIcon className="h-5 w-5" />
@@ -107,7 +107,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#E2E8F0] pt-8 md:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border-light pt-8 md:flex-row">
           <p className="text-xs text-[#64748B]">
             © 2026 Morya Travels. All rights reserved.
           </p>

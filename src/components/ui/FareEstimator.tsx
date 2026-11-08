@@ -32,8 +32,8 @@ export function FareEstimator({ vehicles = [] }: { vehicles?: Vehicle[] }) {
     minKm: 300,
     features: ["AC"],
     extraFeatures: ["Comfort"],
-    badge: "Budget Friendly",
-    badgeColor: "#10B981",
+badge: "Budget Friendly",
+    badgeColor: "var(--color-brand-blue)",
     image: "/images/fleet/maruti-swift-dzire.png",
   };
 

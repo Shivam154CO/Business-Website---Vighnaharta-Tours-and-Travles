@@ -65,8 +65,8 @@ export function TopBar() {
         <div className="flex shrink-0 items-center gap-2">
           <span className="hidden items-center gap-2 rounded-full px-2 py-1 sm:inline-flex">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-blue/50 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-blue" />
             </span>
             <span className="whitespace-nowrap text-[11px] font-medium text-[#475569] sm:text-xs">
               Open 24/7
@@ -78,7 +78,7 @@ export function TopBar() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat with us on WhatsApp"
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white shadow-sm transition-all hover:-translate-y-px hover:bg-[#1EBE5A] hover:shadow-md"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-blue text-white shadow-sm transition-all hover:-translate-y-px hover:bg-brand-blue-light hover:shadow-md"
           >
             <MessageCircle className="h-4 w-4" />
           </a>

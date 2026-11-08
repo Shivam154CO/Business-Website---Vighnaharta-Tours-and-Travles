@@ -44,7 +44,7 @@ export default async function ServicesPage() {
                 className="block"
               >
                 <GlassCard padded={false} className="flex flex-col rounded-xl border border-[#E2E8F0] shadow-sm hover:border-brand-blue transition-all duration-300 group overflow-hidden">
-                    <div className="relative h-48 shrink-0 overflow-hidden bg-[#F1F5F9]">
+                    <div className="relative aspect-[4/3] shrink-0 overflow-hidden bg-[#F1F5F9]">
                       <ZoomableImage
                         src={service.image}
                         alt={service.title}

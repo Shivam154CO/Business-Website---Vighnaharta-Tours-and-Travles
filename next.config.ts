@@ -6,7 +6,11 @@ const nextConfig: NextConfig = {
   images: {
     dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
     formats: ["image/avif", "image/webp"],
-    remotePatterns: [{ protocol: "https", hostname: "coresg-normal.trae.ai" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "coresg-normal.trae.ai" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "en.wikipedia.org" },
+    ],
   },
   poweredByHeader: false,
   reactStrictMode: true,

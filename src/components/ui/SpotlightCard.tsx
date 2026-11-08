@@ -22,7 +22,7 @@ export function SpotlightCard({ children, className }: SpotlightCardProps) {
   return (
     <div
       className={cn(
-        "group relative rounded-3xl border border-gray-100 bg-white p-8 transition-all duration-300",
+        "group relative rounded-3xl border border-border-light bg-white p-8 transition-all duration-300",
         className
       )}
       onMouseMove={handleMouseMove}

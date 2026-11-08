@@ -46,7 +46,7 @@ const FEATURES = [
 
 export function WhyChooseUs() {
   return (
-    <section className="py-24 relative overflow-hidden bg-white">
+    <section className="py-16 relative overflow-hidden bg-white">
       <div className="container-page relative z-10">
         <SectionTitle
           title="The Morya Advantage"
@@ -64,7 +64,7 @@ export function WhyChooseUs() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <SpotlightCard className="h-full border-gray-100 bg-white hover:border-brand-blue/20 transition-colors group">
+                <SpotlightCard className="h-full border-border-light bg-white hover:border-brand-blue/20 transition-colors group">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="w-6 h-6" />
                   </div>

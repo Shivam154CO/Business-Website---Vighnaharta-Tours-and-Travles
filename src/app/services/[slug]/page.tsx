@@ -64,7 +64,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       <section className="py-10 md:py-14 bg-[#F8FAFC]">
         <div className="container-page">
           <div className="grid gap-8 md:gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
-            <div className="relative h-72 overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white sm:h-96">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#E2E8F0] bg-white sm:aspect-[16/9]">
               {service.image.startsWith("/") ? (
                 <SafeImage
                   src={service.image}
@@ -198,7 +198,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
                     href={`/fleet/${vehicle.id}`}
                     className="group overflow-hidden rounded-xl border border-[#E2E8F0] bg-white transition-all duration-300 hover:border-brand-blue hover:shadow-md"
                   >
-                    <div className="relative h-32 overflow-hidden bg-[#F1F5F9]">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-[#F1F5F9]">
                       <SafeImage
                         src={vehicle.image}
                         alt={vehicle.name}
@@ -268,7 +268,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
                     key={place}
                     className="group overflow-hidden rounded-xl border border-[#E2E8F0] bg-white transition-all hover:shadow-md"
                   >
-                    <div className="relative h-40 overflow-hidden bg-[#F1F5F9]">
+<div className="relative aspect-[4/3] overflow-hidden bg-[#F1F5F9]">
                       <SafeImage
 src={`https://en.wikipedia.org/wiki/Special:FilePath/${encodeURIComponent(place.replace(/ /g, "_"))}`}
                         alt={place}
@@ -337,7 +337,7 @@ src={`https://en.wikipedia.org/wiki/Special:FilePath/${encodeURIComponent(place.
                   href={`/services/${relatedService.id}`}
                   className="group overflow-hidden rounded-xl border border-[#E2E8F0] bg-white transition-all duration-300 hover:border-brand-blue hover:shadow-md"
                 >
-                  <div className="relative h-40 overflow-hidden bg-[#F1F5F9]">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-[#F1F5F9]">
                     <SafeImage
                       src={relatedService.image}
                       alt={relatedService.title}

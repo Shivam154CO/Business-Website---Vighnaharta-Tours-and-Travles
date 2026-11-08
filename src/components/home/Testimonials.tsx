@@ -39,7 +39,7 @@ export function Testimonials() {
   const t = TESTIMONIALS[index];
 
   return (
-    <section className="py-20 md:py-24 relative overflow-hidden">
+    <section className="py-12 md:py-16 relative overflow-hidden">
       <div className="container-page relative z-10">
         <div className="mb-12 text-center">
           <h2 className="text-3xl md:text-4xl font-display font-bold text-[#0F172A]">What Our Customers Say</h2>
@@ -65,7 +65,7 @@ export function Testimonials() {
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
                           key={star}
-                          className={`w-4 h-4 ${star <= item.rating ? "fill-[#F59E0B] text-[#F59E0B]" : "text-[#E2E8F0]"}`}
+                          className={`w-4 h-4 ${star <= item.rating ? "fill-accent-gold text-accent-gold" : "text-border-light"}`}
                         />
                       ))}
                     </div>

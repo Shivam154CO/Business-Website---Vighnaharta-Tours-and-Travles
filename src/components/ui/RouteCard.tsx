@@ -12,7 +12,7 @@ interface RouteCardProps {
 export function RouteCard({ route }: RouteCardProps) {
   return (
     <GlassCard padded={false} className="w-[260px] sm:w-[300px] shrink-0 rounded-xl overflow-hidden group relative flex flex-col h-full border border-[#E2E8F0] shadow-sm hover:shadow-md transition-all duration-300">
-      <div className="relative h-52 shrink-0 overflow-hidden bg-[#F1F5F9]">
+      <div className="relative aspect-[4/3] shrink-0 overflow-hidden bg-[#F1F5F9]">
         <ZoomableImage
           src={route.image}
           alt={`${route.name} travel destination`}

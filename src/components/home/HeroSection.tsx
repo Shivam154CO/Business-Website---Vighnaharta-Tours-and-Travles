@@ -229,7 +229,7 @@ export function HeroSection() {
                     alt={car.name}
                     fill
                     priority
-                    className="object-contain scale-[1.05]"
+                    className="object-contain md:scale-[1.05]"
                     sizes="(max-width: 768px) 560px, 760px"
                   />
                 </div>
@@ -365,7 +365,7 @@ export function HeroSection() {
                   </div>
 
                   {submitStatus === "error" && (
-                    <div className="mt-3 p-3 rounded-xl border border-red-500/30 bg-red-500/10 text-red-400 text-sm">
+                    <div className="mt-3 p-3 rounded-xl border border-brand-blue/30 bg-brand-blue/10 text-brand-blue text-sm">
                       Failed to send enquiry. Please try again.
                     </div>
                   )}

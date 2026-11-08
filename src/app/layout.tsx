@@ -6,7 +6,6 @@ import { SITE } from "@/constants/site";
 import { TopBar } from "@/components/layout/TopBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import FloatingCTA from "@/components/layout/DynamicFloatingCTA";
 import ScrollProgress from "@/components/layout/DynamicScrollProgress";
 import { organizationSchema, webSiteSchema } from "@/lib/seo";
 
@@ -102,7 +101,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
         {children}
         <Footer />
-        <FloatingCTA />
       </body>
     </html>
   );

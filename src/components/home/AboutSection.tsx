@@ -25,7 +25,7 @@ const stats = [
 export function AboutSection() {
   return (
     <section className="relative overflow-hidden bg-white py-12 md:py-16">
-      <div className="absolute inset-x-0 top-0 h-56 md:h-72">
+      <div className="absolute inset-x-0 top-0 aspect-[16/9] w-full">
         <SafeImage
           src="/images/brand/about-journeys.png"
           alt="Morya Travels journey"

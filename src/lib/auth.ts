@@ -20,16 +20,6 @@ function getAdminSecret() {
   return secret;
 }
 
-function isSupabaseConfigured() {
-  return Boolean(
-    (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) &&
-      (process.env.SUPABASE_SERVICE_ROLE_KEY ||
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-        process.env.SUPABASE_ANON_KEY),
-  );
-}
-
 export type AdminSessionUser = {
   id: string;
   name: string;
@@ -54,6 +44,13 @@ export function createSessionToken(adminId: string, csrfToken?: string) {
   const signature = crypto.createHmac("sha256", secret).update(payload).digest("hex");
   return `${base64url(payload)}.${signature}`;
 }
+
+export const TEMP_OPEN_ADMIN: AdminSessionUser = {
+  id: "temp",
+  name: "Admin",
+  email: "admin@moryatravels.com",
+  role: "admin",
+};
 
 export function verifySessionToken(token: string) {
   const secret = getAdminSecret();
@@ -84,32 +81,53 @@ export function verifySessionToken(token: string) {
   }
 }
 
-function getPasswordHash(data: Record<string, unknown>) {
-  const candidates = [data.password_hash, data.passwordhash, data.passwordHash];
-  for (const value of candidates) {
-    if (typeof value === "string" && value) return value;
-  }
-  return "";
+export async function verifyAdminCredentials(email: string, password: string): Promise<AdminSessionUser | null> {
+  const normalized = email.trim().toLowerCase();
+  const { data, error } = await supabaseAdmin
+    .from("admins")
+    .select("id, name, email, role, password_hash, passwordhash")
+    .eq("email", normalized)
+    .maybeSingle();
+  if (error || !data) return null;
+
+  const row = data as Record<string, unknown>;
+  const hash = String(row.password_hash ?? row.passwordhash ?? "");
+  if (!hash) return null;
+
+  const ok = await bcrypt.compare(password, hash);
+  if (!ok) return null;
+
+  return { id: String(row.id), name: String(row.name), email: String(row.email), role: String(row.role ?? "admin") };
 }
 
-export const TEMP_OPEN_ADMIN: AdminSessionUser = {
-  id: "open-admin",
-  name: "Admin",
-  email: "admin@local",
-  role: "admin",
-};
+export async function signInAdmin(email: string, password: string): Promise<AdminSessionUser | null> {
+  const admin = await verifyAdminCredentials(email, password);
+  if (!admin) return null;
 
-export async function verifyAdminCredentials(_email: string, _password: string): Promise<AdminSessionUser | null> {
-  return TEMP_OPEN_ADMIN;
-}
-
-export async function signInAdmin(_email: string, _password: string) {
-  return TEMP_OPEN_ADMIN;
+  const cookieStore = await cookies();
+  const csrf = crypto.randomBytes(16).toString("hex");
+  const token = createSessionToken(admin.id, csrf);
+  cookieStore.set(ADMIN_SESSION_COOKIE, token, { httpOnly: true, sameSite: "lax", path: "/", maxAge: SESSION_TTL_SECONDS });
+  cookieStore.set(ADMIN_CSRF_COOKIE, csrf, { httpOnly: true, sameSite: "lax", path: "/", maxAge: SESSION_TTL_SECONDS });
+  return admin;
 }
 
 export async function getCurrentAdmin(): Promise<AdminSessionUser | null> {
-  // TEMP: admin auth disabled by request. Restore before production.
-  return TEMP_OPEN_ADMIN;
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+    if (!token) return null;
+    const payload = verifySessionToken(token);
+    if (!payload) return null;
+
+    const { data, error } = await supabaseAdmin.from("admins").select("id, name, email, role").eq("id", payload.sub).maybeSingle();
+    if (error || !data) return null;
+
+    const row = data as Record<string, unknown>;
+    return { id: String(row.id), name: String(row.name), email: String(row.email), role: String(row.role ?? "admin") };
+  } catch {
+    return null;
+  }
 }
 
 export async function clearAdminSession() {
@@ -131,7 +149,19 @@ export type AdminMutationResult =
   | { ok: true; admin: AdminSessionUser }
   | { ok: false; response: NextResponse };
 
-export async function requireAdminMutation(_request: Request): Promise<AdminMutationResult> {
-  // TEMP: admin auth/CSRF checks disabled by request. Restore before production.
-  return { ok: true, admin: TEMP_OPEN_ADMIN };
+export async function requireAdminMutation(): Promise<AdminMutationResult> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
+    if (!token || !verifySessionToken(token)) {
+      return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+    }
+    const admin = await getCurrentAdmin();
+    if (!admin) {
+      return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+    }
+    return { ok: true, admin };
+  } catch {
+    return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  }
 }

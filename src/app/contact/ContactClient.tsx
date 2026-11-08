@@ -61,7 +61,7 @@ export default function ContactClient() {
       />
       <section className="py-12">
         <div className="container-page text-center">
-          <div className="relative mt-6 overflow-hidden rounded-2xl border border-[#E2E8F0] bg-[#F1F5F9] shadow-sm h-80 md:h-[600px]">
+          <div className="relative aspect-[4/3] md:aspect-[16/9] overflow-hidden rounded-2xl border border-[#E2E8F0] bg-[#F1F5F9] shadow-sm">
             <SafeImage src="/images/brand/about-cover.jpg" alt="Morya Travels service area in Pune" sizes="(max-width: 900px) 100vw, 80rem" className="object-cover object-center" />
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function ContactClient() {
           <GlassCard className="rounded-xl border border-[#E2E8F0] p-6 shadow-sm">
             {sent ? (
               <div className="flex h-full flex-col items-center justify-center py-12 text-center">
-                <CheckCircle2 className="mb-4 h-14 w-14 text-emerald-600" />
+                <CheckCircle2 className="mb-4 h-14 w-14 text-brand-blue" />
                 <h3 className="mb-2 font-display text-2xl font-bold text-[#0F172A]">Message sent</h3>
                 <p className="mb-6 text-sm text-[#64748B]">Your enquiry was saved. We also opened WhatsApp so you can continue the conversation.</p>
                 <AnimatedButton variant="blue" size="md" onClick={() => { setForm({ name: "", email: "", phone: "", message: "" }); setSent(false); }}>Send another</AnimatedButton>
@@ -87,7 +87,7 @@ export default function ContactClient() {
                   </div>
                   <label className="flex flex-col gap-2"><span className="font-mono text-xs uppercase text-[#64748B]">Phone</span><input type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 text-[#0F172A] outline-none focus:border-brand-blue" placeholder="+91 98765 43210" /></label>
                   <label className="flex flex-col gap-2"><span className="font-mono text-xs uppercase text-[#64748B]">Message</span><textarea rows={4} required value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full resize-none rounded-xl border border-[#E2E8F0] bg-white px-4 py-3 text-[#0F172A] outline-none focus:border-brand-blue" placeholder="Tell us about your trip..." /></label>
-                  {error ? <p className="text-sm text-red-600">{error}</p> : null}
+                  {error ? <p className="text-sm text-brand-blue">{error}</p> : null}
                   <AnimatedButton variant="gold" size="lg" type="submit" className="w-full" disabled={submitting}>{submitting ? "Sending..." : "Send Message"}</AnimatedButton>
                 </form>
               </>

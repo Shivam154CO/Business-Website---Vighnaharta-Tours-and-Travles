@@ -58,7 +58,7 @@ export function PopularRoutes({ routes }: PopularRoutesProps) {
   };
 
   return (
-    <section className="py-20 md:py-24 relative overflow-hidden">
+    <section className="py-12 md:py-16 relative overflow-hidden">
       <div className="container-page relative z-10">
         <div className="flex items-end justify-between gap-4 mb-10">
           <SectionTitle

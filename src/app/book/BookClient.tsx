@@ -157,8 +157,8 @@ function BookPageInner() {
             <GlassCard className="rounded-xl border border-[#E2E8F0] p-8 shadow-sm">
               {submitStatus === "success" ? (
                 <div className="py-4 text-center">
-                  <div className="booking-success-ring mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-emerald-500/15">
-                    <div className="booking-success-pop flex h-[72px] w-[72px] items-center justify-center rounded-full bg-emerald-500 shadow-[0_10px_30px_rgba(16,185,129,0.35)]">
+                  <div className="booking-success-ring mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-brand-blue/15">
+                    <div className="booking-success-pop flex h-[72px] w-[72px] items-center justify-center rounded-full bg-brand-blue shadow-[0_10px_30px_rgba(30,79,216,0.35)]">
                       <svg className="booking-success-check h-10 w-10 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
@@ -166,7 +166,7 @@ function BookPageInner() {
                   </div>
                   <div className="booking-success-text mt-6">
                     <h2 className="font-display text-2xl font-bold text-[#0F172A] md:text-3xl">Booking Request Sent</h2>
-                    {bookingNumber ? <p className="mt-2 font-mono text-sm font-semibold text-emerald-700">Ref: {bookingNumber}</p> : null}
+                    {bookingNumber ? <p className="mt-2 font-mono text-sm font-semibold text-brand-blue">Ref: {bookingNumber}</p> : null}
                     <p className="mx-auto mt-3 max-w-md text-sm text-[#64748B]">Thank you{form.name ? `, ${form.name}` : ""}. Our team will contact you shortly to confirm availability and fare.</p>
                     <div className="mx-auto mt-6 max-w-md space-y-2 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 text-left text-sm text-[#334155]">
                       <div className="flex justify-between gap-3"><span className="text-[#64748B]">Route</span><span className="font-medium text-[#0F172A] text-right">{form.pickup || "—"} → {form.dropoff || "—"}</span></div>
@@ -195,7 +195,7 @@ function BookPageInner() {
                     <AnimatedButton variant="gold" size="lg" className="w-full" disabled={submitting} onClick={handleSubmit}>{submitting ? "Submitting..." : "Submit Booking Request"}</AnimatedButton>
                     <a href={whatsappUrl(`Hi Morya Travels, I would like to request a booking.\n\nPickup: ${form.pickup || "Not specified"}\nDrop-off: ${form.dropoff || "Not specified"}\nDate: ${form.date || "Not selected"}\nTrip type: ${form.tripType}\nPassengers: ${form.passengers}${vehicle ? `\nVehicle: ${vehicle.name}` : ""}\nName: ${form.name || "Not specified"}\nPhone: ${form.phone || "Not specified"}\n\nPlease confirm availability and fare.`)} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 rounded-full border border-[#E2E8F0] px-6 py-3 font-body text-sm font-semibold text-[#0F172A] transition-colors hover:bg-[#F1F5F9]"><MessageCircle className="h-4 w-4 shrink-0" /> Or message us on WhatsApp</a>
                   </div>
-                  {submitStatus === "error" && <div className="mt-4 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-600">{submitError || "Failed to submit booking. Please try again or message us on WhatsApp."}</div>}
+                  {submitStatus === "error" && <div className="mt-4 rounded-xl border border-brand-blue/30 bg-brand-blue/10 p-3 text-sm text-brand-blue">{submitError || "Failed to submit booking. Please try again or message us on WhatsApp."}</div>}
                   <div className="mt-6 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 text-left">
                     <div className="flex items-center gap-2 text-sm font-semibold text-[#0F172A]"><Wallet className="h-4 w-4 text-brand-blue" />Payment</div>
                     <p className="mt-1 text-sm text-[#64748B]">Payment is confirmed by our team after availability/fare confirmation. UPI: <span className="font-medium text-[#0F172A]">{SITE.upi}</span></p>

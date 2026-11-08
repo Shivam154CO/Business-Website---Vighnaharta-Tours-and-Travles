@@ -144,14 +144,14 @@ export default function CorporateClient() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(corporateJsonLd) }}
       />
       {/* Hero Section */}
-      <section className="relative py-16 md:py-24 overflow-hidden bg-white">
+      <section className="relative py-8 md:py-10 overflow-hidden bg-white">
         <div className="container-page relative z-10 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-[#0F172A] tracking-tight mb-6 leading-tight"
+            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-[#0F172A] tracking-tight mb-2 leading-tight"
           >
             Move your team,<br />
             <span className="text-brand-blue">effortlessly.</span>
@@ -161,7 +161,7 @@ export default function CorporateClient() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto max-w-xl text-lg text-[#64748B] mb-10 leading-relaxed"
+            className="mx-auto max-w-xl text-lg text-[#64748B] mb-3 leading-relaxed"
           >
             Reliable, scalable transport solutions for your business. From employee shuttles to client pickups, we handle your corporate mobility with care.
           </motion.p>
@@ -184,7 +184,7 @@ export default function CorporateClient() {
 
       {/* Stats Section */}
       <section className="border-y border-[#E2E8F0] bg-[#F8FAFC]">
-        <div className="container-page py-12 md:py-16">
+        <div className="container-page py-4 md:py-8">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8">
             {STATS.map((s) => (
               <motion.div
@@ -210,12 +210,12 @@ export default function CorporateClient() {
       </section>
 
       {/* Why Companies Choose Us */}
-      <section className="py-16 md:py-20 bg-white">
+      <section className="py-8 md:py-12 bg-white">
         <div className="container-page">
           <SectionTitle
             title="Why Companies Choose Us"
             subtitle="Trusted by growing businesses for reliable, compliant corporate mobility."
-            className="mx-auto max-w-2xl text-center mb-12"
+            className="mx-auto max-w-2xl text-center mb-4"
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {FEATURES.map((f, i) => (
@@ -243,7 +243,7 @@ export default function CorporateClient() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 md:py-20 bg-[#F8FAFC]">
+      <section className="py-8 md:py-12 bg-[#F8FAFC]">
         <div className="container-page">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div>
@@ -251,7 +251,7 @@ export default function CorporateClient() {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="text-3xl md:text-4xl font-display font-bold text-[#0F172A] mb-6 leading-tight"
+                className="text-3xl md:text-4xl font-display font-bold text-[#0F172A] mb-4 leading-tight"
               >
                 Built for <span className="text-brand-blue">corporate needs.</span>
               </motion.h2>
@@ -260,7 +260,7 @@ export default function CorporateClient() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-lg text-[#64748B] mb-8 leading-relaxed"
+                className="text-lg text-[#64748B] mb-6 leading-relaxed"
               >
                 Streamline your business travel with dedicated vehicles, vetted drivers, and transparent GST-compliant billing. Focus on your work while we handle the commute.
               </motion.p>
@@ -318,12 +318,12 @@ export default function CorporateClient() {
       </section>
 
       {/* Corporate Plans */}
-      <section className="py-16 md:py-20 border-t border-[#E2E8F0] bg-white">
+      <section className="py-8 md:py-12 border-t border-[#E2E8F0] bg-white">
         <div className="container-page">
           <SectionTitle
             title="Corporate Plans"
             subtitle="Flexible pricing designed for teams of every size."
-            className="mx-auto max-w-2xl text-center mb-12"
+            className="mx-auto max-w-2xl text-center mb-4"
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             {PLANS.map((p, i) => (
@@ -376,12 +376,12 @@ export default function CorporateClient() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 md:py-20 bg-[#F8FAFC] border-t border-[#E2E8F0]">
+      <section className="py-8 md:py-12 bg-[#F8FAFC] border-t border-[#E2E8F0]">
         <div className="container-page">
           <SectionTitle
             title="Trusted by Businesses"
             subtitle="What our corporate clients say about us."
-            className="mx-auto max-w-2xl text-center mb-12"
+            className="mx-auto max-w-2xl text-center mb-4"
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {TESTIMONIALS.map((t) => (
@@ -413,10 +413,10 @@ export default function CorporateClient() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-brand-blue">
+      <section className="py-8 md:py-12 bg-brand-blue">
         <div className="container-page text-center">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Ready to partner with us?</h2>
-          <p className="text-white/90 text-lg mb-8 max-w-xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-3">Ready to partner with us?</h2>
+          <p className="text-white/90 text-lg mb-6 max-w-xl mx-auto">
             Contact {SITE.phoneDisplay} or email {SITE.email} for a custom corporate plan tailored to your business.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

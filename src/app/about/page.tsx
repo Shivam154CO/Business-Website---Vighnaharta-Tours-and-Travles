@@ -30,17 +30,17 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }}
       />
-      <section className="py-24 relative overflow-hidden">
+      <section className="py-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC] to-white pointer-events-none" />
         <div className="container-page relative z-10 text-center">
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-[#0F172A] mb-6">
+          <h1 className="text-5xl md:text-7xl font-display font-bold text-[#0F172A] mb-4">
             About Morya Travels
           </h1>
           <p className="text-lg text-[#64748B] max-w-2xl mx-auto">
             Your trusted travel partner in Pune and across Maharashtra — offering
             clean cabs, professional drivers, and transparent pricing since day one.
           </p>
-          <div className="relative mt-12 h-56 md:h-80 lg:h-96 rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-sm bg-[#F1F5F9]">
+          <div className="relative mt-8 h-56 md:h-80 lg:h-96 rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-sm bg-[#F1F5F9]">
             <SafeImage
               src={ABOUT_HERO}
               alt="Morya Travels cab on a scenic Maharashtra highway"
@@ -52,13 +52,14 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-24">
+      <section className="py-12">
         <div className="container-page">
           <SectionTitle
             title="Our Story"
             subtitle="Driven by trust, powered by comfort."
+            className="mx-auto max-w-2xl text-center mb-6"
           />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <GlassCard className="p-12">
 <p className="text-[#64748B] leading-relaxed mb-6">
                   We offer affordable tour packages for everyone to enjoy a bagful of
@@ -82,7 +83,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
             {[
               "Economical Transfers",
               "Car Hire Company in Pune",
@@ -97,10 +98,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="py-20 border-t border-[#E2E8F0] bg-[#F8FAFC]">
+      <section className="py-10 border-t border-[#E2E8F0] bg-[#F8FAFC]">
         <div className="container-page text-center">
-          <SectionTitle title="Meet Our Team" subtitle="The people behind Morya Travels" />
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 max-w-3xl mx-auto">
+          <SectionTitle title="Meet Our Team" subtitle="The people behind Morya Travels" className="mb-4" />
+          <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 max-w-3xl mx-auto">
 <GlassCard className="overflow-hidden rounded-2xl border border-[#E2E8F0] shadow-sm">
                <div className="relative h-[330px] w-full overflow-hidden bg-[#F1F5F9]">
                  <SafeImage
@@ -154,7 +155,7 @@ src="/images/brand/profile-ashvin-rathod.png"
         </div>
       </section>
 
-      <section className="py-16 text-center">
+      <section className="py-8 text-center">
         <AnimatedButton variant="gold" size="lg" href="/book">
           Book Your Ride
         </AnimatedButton>

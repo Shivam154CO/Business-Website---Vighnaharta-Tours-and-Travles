@@ -38,19 +38,19 @@ export default async function FleetPage() {
         { label: "Home", href: "/" },
         { label: "Fleet", href: "/fleet" },
       ]} />
-      <section className="pb-10 pt-20">
+<section className="py-10">
         <div className="container-page">
-          <SectionTitle title="Our Fleet" subtitle="Clean, well-maintained vehicles for every need." />
+          <SectionTitle title="Our Fleet" subtitle="Clean, well-maintained vehicles for every need." className="mx-auto max-w-2xl text-center mb-4" />
         </div>
       </section>
 
-      <section className="pb-12">
+      <section className="py-8">
         <div className="container-page max-w-4xl">
           <FareEstimator vehicles={vehicles} />
         </div>
       </section>
 
-      <section className="pb-16">
+      <section className="py-10">
         <div className="container-page">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {vehicles.map((vehicle) => (

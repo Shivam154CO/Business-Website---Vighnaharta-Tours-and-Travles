@@ -16,7 +16,7 @@ export function ServicesGrid({ services }: { services: ServiceItem[] }) {
   const withoutImage = featured.filter((s) => !hasServiceImage(s.image));
 
   return (
-    <section className="relative overflow-hidden py-32 bg-white">
+    <section className="relative overflow-hidden py-16 bg-white">
       <div className="container-page relative z-10">
         <SectionTitle
           title="Our Premium Services"
@@ -34,8 +34,8 @@ export function ServicesGrid({ services }: { services: ServiceItem[] }) {
               className="group"
             >
               <Link href={`/services/${service.id}`} className="block">
-                <SpotlightCard className="h-full p-0 overflow-hidden bg-white border-gray-100 flex flex-col hover:border-brand-blue/20 transition-colors">
-                  <div className="relative h-60 overflow-hidden bg-gray-50">
+                <SpotlightCard className="h-full p-0 overflow-hidden bg-white border-border-light flex flex-col hover:border-brand-blue/20 transition-colors">
+                  <div className="relative h-60 overflow-hidden bg-bg-card">
                     <ZoomableImage
                       src={service.image}
                       alt={service.title}

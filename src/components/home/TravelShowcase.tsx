@@ -99,12 +99,12 @@ export function TravelShowcase() {
             </div>
           </motion.div>
 
-          <motion.div
+<motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="group relative h-[420px] md:h-[520px]"
+            className="group relative aspect-[16/9] md:aspect-[4/3]"
           >
             <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-[#f5c76a]/20 blur-[60px] transition-colors duration-700 group-hover:bg-[#f5c76a]/30" />
             <div className="relative h-full overflow-hidden rounded-[32px] border border-[#E2E8F0] bg-[#F8FAFC] shadow-[0_25px_60px_rgba(15,23,42,0.08)]">
