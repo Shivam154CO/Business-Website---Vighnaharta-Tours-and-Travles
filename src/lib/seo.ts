@@ -21,10 +21,16 @@ const ADDRESS = {
 const CONTACT_POINT = {
   "@type": "ContactPoint" as const,
   telephone: SITE.phoneDisplay,
-    contactType: "customer service",
+  contactType: "customer service",
   availableLanguage: ["en", "hi", "mr"],
   areaServed: "Maharashtra, IN",
 } as const;
+
+export const LANGUAGES = [
+  { code: "en-IN", label: "English", href: "/" },
+  { code: "hi-IN", label: "हिन्दी", href: "/" },
+  { code: "mr-IN", label: "मराठी", href: "/" },
+] as const;
 
 export const SEO = {
   siteName: SITE.name,
@@ -54,11 +60,16 @@ export function buildMetadata(options: {
 }): Metadata {
   const image = options.ogImage ?? DEFAULT_OG_IMAGE;
   const canonical = options.canonical ?? "/";
+  const langAlternates: Record<string, string> = {};
+  LANGUAGES.forEach((l) => { langAlternates[l.code] = absoluteUrl(l.href); });
   return {
     title: options.title,
     description: options.description,
     metadataBase: new URL(SITE.url),
-    alternates: { canonical: absoluteUrl(canonical) },
+    alternates: {
+      canonical: absoluteUrl(canonical),
+      languages: langAlternates,
+    },
     openGraph: {
       title: options.title,
       description: options.description,
@@ -128,7 +139,6 @@ export function organizationSchema() {
         "Tempo Traveller rental",
       ],
       priceRange: "₹₹",
-      hasMerchantReturnPolicy: undefined,
     },
     {
       "@context": "https://schema.org",
@@ -147,7 +157,6 @@ export function organizationSchema() {
       areaServed: "Maharashtra",
       openingHours: "Mo-Su 00:00-23:59",
       serviceType: ["Outstation cabs", "Airport taxi", "Pilgrimage cab", "Corporate cab", "Tempo Traveller on rent"],
-      hasOfferCatalog: undefined,
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: "4.9",
@@ -158,6 +167,36 @@ export function organizationSchema() {
     },
   ];
 }
+
+/** FAQPage schema for FAQ rich snippets */
+export function faqSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  };
+}
+
+/** BreadcrumbList JSON-LD */
+export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url.startsWith('http') ? item.url : absoluteUrl(item.url),
+    })),
+  };
+}
+
+export const breadcrumbSchema = breadcrumbJsonLd;
+
 
 /** Service schema for service detail pages */
 export function serviceSchema(service: {
@@ -247,20 +286,6 @@ export function vehicleSchema(vehicle: {
   };
 }
 
-/** BreadcrumbList schema */
-export function breadcrumbSchema(items: { name: string; url: string }[]) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      name: item.name,
-      item: item.url.startsWith("http") ? item.url : absoluteUrl(item.url),
-    })),
-  };
-}
-
 /** WebSite schema with search action */
 export function webSiteSchema() {
   return {
@@ -296,3 +321,7 @@ export function contactSchema() {
     sameAs: [SITE.instagram, SITE.whatsapp, SITE.whatsapp2],
   };
 }
+
+
+
+

@@ -10,6 +10,15 @@ type Svc = Record<string, unknown>;
 function s(v: unknown) { return v == null ? "" : String(v); }
 function arr(v: unknown) { return Array.isArray(v) ? v.join("\n") : typeof v === "string" ? v : ""; }
 
+async function uploadImage(file: File): Promise<string> {
+  const form = new FormData();
+  form.append("file", file);
+  const res = await fetch("/api/morya-admin-hq-9x/upload", { method: "POST", credentials: "same-origin", body: form });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || "Upload failed");
+  return String(data.url);
+}
+
 export default function EditServicePage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
@@ -66,7 +75,7 @@ export default function EditServicePage() {
           <label className="text-sm text-slate-600">Icon<select value={s(form.icon)||"Car"} onChange={(e)=>set("icon",e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5">{ICONS.map(c=><option key={c} value={c}>{c}</option>)}</select></label>
           <label className="text-sm text-slate-600">Fare<input value={s(form.fare)} onChange={(e)=>set("fare",e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5" /></label>
           <label className="text-sm text-slate-600">Fare unit<input value={s(form.fareUnit)} onChange={(e)=>set("fareUnit",e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5" /></label>
-          <label className="text-sm text-slate-600 md:col-span-2">Image path<input value={s(form.image)} onChange={(e)=>set("image",e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5" /></label>
+          <label className="text-sm text-slate-600 md:col-span-2">Image path<div className="flex items-center gap-2 mt-1"><input required value={s(form.image)} onChange={(e)=>set("image",e.target.value)} className="rounded-xl border border-slate-200 px-3 py-2.5 flex-1 text-sm" /><button type="button" onChange={undefined} onClick={async (e)=>{ e.preventDefault(); const input=document.getElementById("svc-img-upload") as HTMLInputElement; input.value=""; input.click(); }} className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-brand-blue hover:bg-brand-blue/5">Upload</button><input id="svc-img-upload" type="file" accept="image/*" className="hidden" onChange={async (e)=>{ const f=e.target.files?.[0]; if(!f)return; try{const url=await uploadImage(f); set("image",url);}catch(err){setError(err instanceof Error?err.message:"Upload failed");} }} /></div></label>
           <label className="text-sm text-slate-600 md:col-span-2">Includes (one per line)<textarea rows={4} value={s(form.includes)} onChange={(e)=>set("includes",e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5" /></label>
           <label className="text-sm text-slate-600 md:col-span-2">Ideal for (one per line)<textarea rows={3} value={s(form.idealFor)} onChange={(e)=>set("idealFor",e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5" /></label>
           <label className="text-sm text-slate-600 md:col-span-2">Related service slugs (comma separated)<input value={s(form.relatedIds)} onChange={(e)=>set("relatedIds",e.target.value)} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5" /></label>

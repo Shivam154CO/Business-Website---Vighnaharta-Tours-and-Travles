@@ -1,6 +1,7 @@
 ﻿import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const updateSchema = z.object({
@@ -32,7 +33,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const { id } = await params;
     if (!id) return NextResponse.json({ error: "Booking id is required" }, { status: 400 });
     const { data, error } = await supabaseAdmin.from("bookings").select("*").eq("id", id).maybeSingle();
-    if (error) return NextResponse.json({ error: error.message || "Failed to load booking" }, { status: 500 });
+    if (error) return serverError("Failed to load booking");
     if (!data) return NextResponse.json({ error: "Booking not found" }, { status: 404 });
     return NextResponse.json({ ok: true, booking: data });
   } catch {
@@ -60,18 +61,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
 
     const { data, error } = await supabaseAdmin.from("bookings").update(update).eq("id", id).select("*").maybeSingle();
-    if (error) {
-      const hint = !process.env.SUPABASE_SERVICE_ROLE_KEY
-        ? " Server is using the publishable Supabase key; set SUPABASE_SERVICE_ROLE_KEY in .env.local and restart the dev server (RLS may block writes)."
-        : "";
-      return NextResponse.json({ error: (error.message || "Failed to update booking") + hint }, { status: 500 });
-    }
+    if (error) return serverError("Failed to update booking");
     if (!data) {
-      const hint = !process.env.SUPABASE_SERVICE_ROLE_KEY
-        ? " No row updated. Set SUPABASE_SERVICE_ROLE_KEY in .env.local and restart the dev server (Supabase RLS likely blocked the write)."
-        : " Booking not found or no changes applied.";
-      const status = process.env.SUPABASE_SERVICE_ROLE_KEY ? 404 : 500;
-      return NextResponse.json({ error: "Failed to update booking." + hint }, { status });
+      return NextResponse.json({ error: "Booking not found or no changes applied." }, { status: 404 });
     }
     return NextResponse.json({ ok: true, booking: data });
   } catch {
@@ -84,15 +76,8 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
     const { id } = await params;
     if (!id) return NextResponse.json({ error: "Booking id is required" }, { status: 400 });
     const { error, count } = await supabaseAdmin.from("bookings").delete({ count: "exact" }).eq("id", id);
-    if (error) {
-      const hint = !process.env.SUPABASE_SERVICE_ROLE_KEY
-        ? " Server is using the publishable Supabase key; set SUPABASE_SERVICE_ROLE_KEY in .env.local and restart the dev server (RLS may block writes)."
-        : "";
-      return NextResponse.json({ error: (error.message || "Failed to delete booking") + hint }, { status: 500 });
-    }
-    if (!count && !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return NextResponse.json({ error: "Failed to delete booking. Set SUPABASE_SERVICE_ROLE_KEY in .env.local and restart the dev server (Supabase RLS likely blocked the delete)." }, { status: 500 });
-    }
+    if (error) return serverError("Failed to delete booking");
+    if (!count) return NextResponse.json({ error: "Booking not found" }, { status: 404 });
     return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Failed to delete booking" }, { status: 500 });

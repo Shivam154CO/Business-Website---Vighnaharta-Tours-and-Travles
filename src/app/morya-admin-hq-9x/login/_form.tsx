@@ -67,6 +67,16 @@ export default function LoginForm() {
             {saving ? "Signing in..." : "Sign in"}
           </button>
         </form>
+        <p className="mt-4 text-center text-sm text-slate-500">
+          Forgot your password?{" "}
+          <button
+            type="button"
+            onClick={() => router.push("/morya-admin-hq-9x/forgot-password")}
+            className="text-brand-blue underline hover:text-brand-blue/90"
+          >
+            Reset it
+          </button>
+        </p>
       </div>
     </main>
   );

@@ -29,18 +29,18 @@ const features = [
 ];
 
 const locations = [
-  { src: "/images/locations/location-01.jpg", name: "Lonavala" },
-  { src: "/images/locations/location-02.jpg", name: "Aare Ware Beach" },
-  { src: "/images/locations/location-03.jpg", name: "Sai Baba Mandir, Shirdi" },
-  { src: "/images/locations/location-04.jpg", name: "Bhimashankar" },
-  { src: "/images/locations/location-05.jpg", name: "Mahabaleshwar" },
-  { src: "/images/locations/location-06.jpg", name: "Ganpatipule" },
-  { src: "/images/locations/location-07.jpg", name: "Goa" },
-  { src: "/images/locations/location-08.jpg", name: "Tamhini Ghat" },
-  { src: "/images/locations/location-09.jpg", name: "Raigad" },
-  { src: "/images/locations/location-10.jpg", name: "Gateway of India, Mumbai" },
-  { src: "/images/locations/location-11.jpg", name: "Shreemant Dagdusheth Halwai Ganpati Mandir" },
-  { src: "/images/locations/location-12.jpg", name: "Popular destinations across Maharashtra" },
+  { src: "/images/locations/location-01.jpg", name: "Lonavala, Pune" },
+  { src: "/images/locations/location-02.jpg", name: "Gateway of India, Mumbai" },
+  { src: "/images/locations/location-03.jpg", name: "Dahdushet Ganpati, Pune" },
+  { src: "/images/locations/location-04.jpg", name: "Maharashtra Top Places" },
+  { src: "/images/locations/location-05.jpg", name: "Aare Vare Beach" },
+  { src: "/images/locations/location-06.jpg", name: "Saibaba Mandir, Shirdi" },
+  { src: "/images/locations/location-07.jpg", name: "Bhimashankar" },
+  { src: "/images/locations/location-08.jpg", name: "Mahabaleshwar" },
+  { src: "/images/locations/location-09.jpg", name: "Ganpati Pule" },
+  { src: "/images/locations/location-10.jpg", name: "Goa" },
+  { src: "/images/locations/location-11.jpg", name: "Tamhini Ghat" },
+  { src: "/images/locations/location-12.jpg", name: "Raigad" },
 ];
 
 export function TravelShowcase() {

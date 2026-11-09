@@ -2,6 +2,7 @@
 import { z } from "zod";
 
 import { sendExternalNotification } from "@/lib/notify";
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const contactSchema = z.object({
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabaseAdmin.from("leads").insert(row).select("*").single();
     if (error) {
       console.error("Contact insert error:", error);
-      return NextResponse.json({ error: `Failed to submit message: ${error.message}` }, { status: 500 });
+      return serverError("Failed to submit message");
     }
 
     await supabaseAdmin.from("notifications").insert({

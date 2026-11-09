@@ -2,6 +2,7 @@
 import { z } from "zod";
 
 import { requireAdminMutation } from "@/lib/auth";
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const vehicleSchema = z.object({
@@ -25,11 +26,11 @@ function slugify(value: string) {
   return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   const guard = await requireAdminMutation();
   if (!guard.ok) return guard.response;
   const { data, error } = await supabaseAdmin.from("vehicles").select("*").order("created_at", { ascending: true });
-  if (error) return NextResponse.json({ error: `Failed to load vehicles: ${error.message}` }, { status: 500 });
+  if (error) return serverError("Failed to load vehicles");
   return NextResponse.json({ ok: true, vehicles: data ?? [] });
 }
 
@@ -60,9 +61,9 @@ export async function POST(request: Request) {
       updated_at: new Date().toISOString(),
     };
     const { data, error } = await supabaseAdmin.from("vehicles").insert(row).select("*").single();
-    if (error) return NextResponse.json({ error: `Failed to create vehicle: ${error.message}` }, { status: 500 });
+    if (error) return serverError("Failed to create vehicle");
     return NextResponse.json({ ok: true, vehicle: data });
   } catch {
-    return NextResponse.json({ error: "Failed to create vehicle" }, { status: 500 });
+    return serverError("Failed to create vehicle");
   }
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminMutation } from "@/lib/auth";
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const schema = z.object({
@@ -26,11 +27,11 @@ const schema = z.object({
 function slugify(value: string) { return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 function lines(v: string) { return v.split("\n").map((s) => s.trim()).filter(Boolean); }
 
-export async function GET(request: Request) {
+export async function GET() {
   const guard = await requireAdminMutation();
   if (!guard.ok) return guard.response;
   const { data, error } = await supabaseAdmin.from("services").select("*").order("sort_order", { ascending: true }).order("created_at", { ascending: true });
-  if (error) return NextResponse.json({ error: `Failed to load services: ${error.message}` }, { status: 500 });
+  if (error) return serverError("Failed to load services");
   return NextResponse.json({ ok: true, services: data ?? [] });
 }
 
@@ -62,9 +63,9 @@ export async function POST(request: Request) {
       updated_at: new Date().toISOString(),
     };
     const { data, error } = await supabaseAdmin.from("services").insert(row).select("*").single();
-    if (error) return NextResponse.json({ error: `Failed to create service: ${error.message}` }, { status: 500 });
+    if (error) return serverError("Failed to create service");
     return NextResponse.json({ ok: true, service: data });
-  } catch (e) {
-    return NextResponse.json({ error: e instanceof Error ? e.message : "Failed to create service" }, { status: 500 });
+  } catch {
+    return serverError("Failed to create service");
   }
 }

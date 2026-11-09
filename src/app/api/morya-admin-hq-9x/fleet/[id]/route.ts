@@ -2,6 +2,7 @@
 import { z } from "zod";
 
 import { requireAdminMutation } from "@/lib/auth";
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const updateSchema = z.object({
@@ -26,7 +27,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   if (!guard.ok) return guard.response;
   const { id } = await params;
   const { data, error } = await supabaseAdmin.from("vehicles").select("*").eq("id", id).maybeSingle();
-  if (error) return NextResponse.json({ error: `Failed to load vehicle: ${error.message}` }, { status: 500 });
+  if (error) return serverError("Failed to load vehicle");
   if (!data) return NextResponse.json({ error: "Vehicle not found" }, { status: 404 });
   return NextResponse.json({ ok: true, vehicle: data });
 }
@@ -56,7 +57,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (p.packageRate !== undefined) update.package_rate = p.packageRate;
     if (p.available !== undefined) update.available = p.available;
     const { data, error } = await supabaseAdmin.from("vehicles").update(update).eq("id", id).select("*").maybeSingle();
-    if (error) return NextResponse.json({ error: `Failed to update vehicle: ${error.message}` }, { status: 500 });
+    if (error) return serverError("Failed to update vehicle");
     if (!data) return NextResponse.json({ error: "Vehicle not found" }, { status: 404 });
     return NextResponse.json({ ok: true, vehicle: data });
   } catch {

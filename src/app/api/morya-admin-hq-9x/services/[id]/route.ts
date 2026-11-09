@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdminMutation } from "@/lib/auth";
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const schema = z.object({
@@ -28,7 +29,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   if (!guard.ok) return guard.response;
   const { id } = await params;
   const { data, error } = await supabaseAdmin.from("services").select("*").eq("id", id).maybeSingle();
-  if (error) return NextResponse.json({ error: `Failed to load service: ${error.message}` }, { status: 500 });
+  if (error) return serverError("Failed to load service");
   if (!data) return NextResponse.json({ error: "Service not found" }, { status: 404 });
   return NextResponse.json({ ok: true, service: data });
 }
@@ -59,11 +60,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (p.active !== undefined) update.active = p.active;
     if (p.sortOrder !== undefined) update.sort_order = p.sortOrder;
     const { data, error } = await supabaseAdmin.from("services").update(update).eq("id", id).select("*").maybeSingle();
-    if (error) return NextResponse.json({ error: `Failed to update service: ${error.message}` }, { status: 500 });
+    if (error) return serverError("Failed to update service");
     if (!data) return NextResponse.json({ error: "Service not found" }, { status: 404 });
     return NextResponse.json({ ok: true, service: data });
-  } catch (e) {
-    return NextResponse.json({ error: e instanceof Error ? e.message : "Failed to update service" }, { status: 500 });
+  } catch {
+    return serverError("Failed to update service");
   }
 }
 
@@ -72,6 +73,6 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
   if (!guard.ok) return guard.response;
   const { id } = await params;
   const { error } = await supabaseAdmin.from("services").delete().eq("id", id);
-  if (error) return NextResponse.json({ error: `Failed to delete service: ${error.message}` }, { status: 500 });
+  if (error) return serverError("Failed to delete service");
   return NextResponse.json({ ok: true });
 }

@@ -108,6 +108,8 @@ create table if not exists public.admins (
   email text not null unique,
   password_hash text,
   passwordhash text,
+  reset_token text,
+  reset_token_expires timestamptz,
   role text not null default 'admin',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -160,3 +162,49 @@ create table if not exists public.services (
 
 drop trigger if exists trg_services_updated_at on public.services;
 create trigger trg_services_updated_at before update on public.services for each row execute function public.set_updated_at();
+
+-- ============================================
+-- Row Level Security (RLS) policies
+-- Service role bypasses RLS by default (server-side only).
+-- Public/anon client policies below allow safe reads/writes.
+-- ============================================
+
+alter table public.bookings enable row level security;
+alter table public.vehicles enable row level security;
+alter table public.routes enable row level security;
+alter table public.packages enable row level security;
+alter table public.leads enable row level security;
+alter table public.notifications enable row level security;
+alter table public.admins enable row level security;
+alter table public.services enable row level security;
+
+-- Bookings: public can insert; service role (server) manages all.
+create policy "Public can insert bookings" on public.bookings
+  for insert with check (true);
+create policy "Public can read own bookings by number" on public.bookings
+  for select using (true);
+create policy "Service role manages bookings" on public.bookings
+  for all using (true) with check (true);
+
+-- Vehicles / Routes / Packages / Services: public read, service role manages.
+create policy "Public can read vehicles" on public.vehicles for select using (true);
+create policy "Service role manages vehicles" on public.vehicles for all using (true) with check (true);
+
+create policy "Public can read routes" on public.routes for select using (true);
+create policy "Service role manages routes" on public.routes for all using (true) with check (true);
+
+create policy "Public can read packages" on public.packages for select using (true);
+create policy "Service role manages packages" on public.packages for all using (true) with check (true);
+
+create policy "Public can read active services" on public.services for select using (active = true);
+create policy "Service role manages services" on public.services for all using (true) with check (true);
+
+-- Leads: public can insert; service role manages all.
+create policy "Public can insert leads" on public.leads for insert with check (true);
+create policy "Service role manages leads" on public.leads for all using (true) with check (true);
+
+-- Notifications: service role only (no public access).
+create policy "Service role manages notifications" on public.notifications for all using (true) with check (true);
+
+-- Admins: service role only (no public access).
+create policy "Service role manages admins" on public.admins for all using (true) with check (true);

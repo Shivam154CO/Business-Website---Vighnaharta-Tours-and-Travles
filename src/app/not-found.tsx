@@ -1,51 +1,35 @@
-import Link from "next/link";
-import { AnimatedButton } from "@/components/ui/AnimatedButton";
-import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { CarFront } from "lucide-react";
-import type { Metadata } from "next";
-import { buildMetadata } from "@/lib/seo";
+"use client";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Page Not Found — Morya Travels",
-  description: "The page you are looking for could not be found. Book a cab or return to the homepage.",
-  canonical: "/404",
-  noIndex: true,
-});
+import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-      <Breadcrumbs items={[
-        { label: "Home", href: "/" },
-        { label: "404", href: "/404" },
-      ]} />
-      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-blue/10 text-brand-blue">
-        <CarFront className="h-8 w-8" />
+    <main className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center bg-slate-50 px-4 pt-12 pb-20">
+      <div className="max-w-md text-center space-y-8">
+        <div className="animate-pulse inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-200 mb-4">
+          <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h1 className="text-4xl font-display font-bold text-text-primary">Page not found</h1>
+        <p className="text-lg text-text-muted">
+          The page you&rsquo;re looking for doesn&rsquo;t exist or has been moved.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href="/"
+            className="rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white hover:bg-brand-blue-light transition-colors"
+          >
+            Go home
+          </Link>
+          <button
+            onClick={() => window.history.back()}
+            className="rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-text-primary hover:bg-slate-100 transition-colors"
+          >
+            Go back
+          </button>
+        </div>
       </div>
-      <p className="font-mono text-sm font-semibold uppercase tracking-widest text-brand-blue">
-        404
-      </p>
-      <h1 className="mt-3 font-display text-3xl font-bold text-[#0F172A] sm:text-4xl">
-        This road leads nowhere
-      </h1>
-      <p className="mx-auto mt-4 max-w-md text-[#64748B]">
-        The page you are looking for could not be found. Let us get you back on
-        route.
-      </p>
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <AnimatedButton variant="gold" size="md" href="/">
-          Back to home
-        </AnimatedButton>
-        <AnimatedButton variant="ghost" size="md" href="/book">
-          Book a cab
-        </AnimatedButton>
-      </div>
-      <Link
-        href="/contact"
-        className="mt-6 text-sm font-medium text-[#64748B] transition-colors hover:text-brand-blue"
-      >
-        Need help? Contact us
-      </Link>
-    </div>
+    </main>
   );
 }

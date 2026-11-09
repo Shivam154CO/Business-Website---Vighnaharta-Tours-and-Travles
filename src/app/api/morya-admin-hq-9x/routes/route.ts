@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { requireAdminMutation } from "@/lib/auth";
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const routeSchema = z.object({
@@ -18,11 +19,11 @@ function slugify(value: string) {
   return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   const guard = await requireAdminMutation();
   if (!guard.ok) return guard.response;
   const { data, error } = await supabaseAdmin.from("routes").select("*").order("created_at", { ascending: true });
-  if (error) return NextResponse.json({ error: "Failed to load routes: "+error.message }, { status: 500 });
+  if (error) return serverError("Failed to load routes");
   return NextResponse.json({ ok: true, routes: data ?? [] });
 }
 
@@ -46,10 +47,9 @@ export async function POST(request: Request) {
       updated_at: new Date().toISOString(),
     };
     const { data, error } = await supabaseAdmin.from("routes").insert(row).select("*").single();
-    if (error) return NextResponse.json({ error: "Failed to create route: "+error.message }, { status: 500 });
+    if (error) return serverError("Failed to create route");
     return NextResponse.json({ ok: true, route: data });
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : "Failed to create route";
-    return NextResponse.json({ error: msg }, { status: 500 });
+  } catch {
+    return serverError("Failed to create route");
   }
 }

@@ -2,6 +2,7 @@
 import { z } from "zod";
 
 import { sendExternalNotification } from "@/lib/notify";
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const bookingSchema = z.object({
@@ -31,7 +32,7 @@ function safeDate(value: string) {
 export async function GET() {
   try {
     const { data, error } = await supabaseAdmin.from("bookings").select("*").order("created_at", { ascending: false });
-    if (error) return NextResponse.json({ error: error.message || "Failed to load bookings" }, { status: 500 });
+    if (error) return serverError("Failed to load bookings");
     return NextResponse.json({ ok: true, bookings: data ?? [] });
   } catch {
     return NextResponse.json({ error: "Failed to load bookings" }, { status: 500 });
@@ -77,10 +78,7 @@ export async function POST(request: Request) {
     const { data: booking, error: bookingError } = await supabaseAdmin.from("bookings").insert(row).select("*").single();
 
     if (bookingError || !booking) {
-      const hint = !process.env.SUPABASE_SERVICE_ROLE_KEY
-        ? " Server is using the publishable Supabase key; set SUPABASE_SERVICE_ROLE_KEY in .env.local and restart the dev server (RLS may block writes)."
-        : "";
-      return NextResponse.json({ error: (bookingError?.message || "Failed to create booking") + hint }, { status: 500 });
+      return serverError("Failed to create booking");
     }
 
     await supabaseAdmin.from("notifications").insert({

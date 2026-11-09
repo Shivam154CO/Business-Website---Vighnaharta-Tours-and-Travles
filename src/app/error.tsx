@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import { AnimatedButton } from "@/components/ui/AnimatedButton";
-import { AlertTriangle } from "lucide-react";
+export const metadata = {
+  title: "Something went wrong",
+};
 
 export default function Error({
   error,
@@ -11,30 +11,30 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
+  console.error("Next.js error boundary:", error);
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-      <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent-gold/10 text-accent-gold">
-        <AlertTriangle className="h-8 w-8" />
-      </div>
-      <h1 className="font-display text-3xl font-bold text-[#0F172A] sm:text-4xl">
-        Something went wrong
-      </h1>
-      <p className="mx-auto mt-4 max-w-md text-[#64748B]">
-        We hit an unexpected error while loading this page. Please try again, or
-        call us directly if the problem continues.
-      </p>
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <AnimatedButton variant="gold" size="md" onClick={reset}>
+    <main className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center bg-slate-50 px-4 pt-12 pb-20">
+      <div className="max-w-md text-center space-y-6">
+        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-red-100 mb-4">
+          <svg className="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <h1 className="text-3xl font-display font-bold text-text-primary">Something went wrong</h1>
+        <p className="text-lg text-text-muted">
+          We encountered an unexpected error. Please try refreshing the page.
+        </p>
+        <button
+          onClick={() => {
+            reset();
+            window.location.reload();
+          }}
+          className="rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white hover:bg-brand-blue-light transition-colors"
+        >
           Try again
-        </AnimatedButton>
-        <AnimatedButton variant="ghost" size="md" href="/contact">
-          Contact support
-        </AnimatedButton>
+        </button>
       </div>
-    </div>
+    </main>
   );
 }

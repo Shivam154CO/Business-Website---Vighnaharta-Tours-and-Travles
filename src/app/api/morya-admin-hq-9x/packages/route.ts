@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { requireAdminMutation } from "@/lib/auth";
+import { serverError } from "@/lib/api-error";
 import { supabaseAdmin } from "@/lib/supabase";
 
 const packageSchema = z.object({
@@ -17,11 +18,11 @@ function slugify(value: string) {
   return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   const guard = await requireAdminMutation();
   if (!guard.ok) return guard.response;
   const { data, error } = await supabaseAdmin.from("packages").select("*").order("created_at", { ascending: true });
-  if (error) return NextResponse.json({ error: "Failed to load packages: "+error.message }, { status: 500 });
+  if (error) return serverError("Failed to load packages");
   return NextResponse.json({ ok: true, packages: data ?? [] });
 }
 
@@ -45,10 +46,9 @@ export async function POST(request: Request) {
       updated_at: new Date().toISOString(),
     };
     const { data, error } = await supabaseAdmin.from("packages").insert(row).select("*").single();
-    if (error) return NextResponse.json({ error: "Failed to create package: "+error.message }, { status: 500 });
+    if (error) return serverError("Failed to create package");
     return NextResponse.json({ ok: true, package: data });
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : "Failed to create package. Ensure columns/rows are valid JSON.";
-    return NextResponse.json({ error: msg }, { status: 400 });
+  } catch {
+    return serverError("Failed to create package. Ensure columns/rows are valid JSON.");
   }
 }
